@@ -1,0 +1,39 @@
+body {
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.jumbotron img {
+    width: 250px;
+    float: right;
+}
+
+.team-logo {
+    width: 100px;
+}
+
+a {
+    cursor: pointer;
+}
+
+.chat-module {
+    height: 363px;
+    overflow: auto;
+}
+
+.chat-controls .chat-message {
+    /*width: 80%;*/
+}
+
+.chat-controls .chat-send {
+    /*float: right;*/
+}
+
+.top-menu {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .top-menu {
+        display: block;
+    }
+}

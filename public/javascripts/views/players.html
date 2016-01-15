@@ -1,0 +1,43 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Players</h2>
+            
+            <div class="form">
+                <div class="form-group">
+                    <label>League</label>
+                    <select class="form-control" ng-model="players.query.leagueKey" ng-options="league.league_key as league.name for league in players.leagues">
+                    </select>
+                </div>
+                
+                <div ng-if="players.query.leagueKey">
+                    <div class="form-group">
+                        <label>Player Name</label>
+                        <input type="text" class="form-control" ng-model="players.query.player" />
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn" ng-click="players.search()">Search</button>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table table-striped" ng-if="players.query.results.length">
+                <tr>
+                    <th>Name</th>
+                    <th>Team</th>
+                    <th>Position</th>
+                    <th>Headshot</th>
+                </tr>
+                <tr ng-repeat="player in players.query.results">
+                    <td>{{player.name.full}}</td>
+                    <td>{{player.editorial_team_full_name}}</td>
+                    <td>{{player.display_position}}</td>
+                    <td>
+                        <img ng-src="{{player.headshot.url}}" alt="{{player.name.full}}" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

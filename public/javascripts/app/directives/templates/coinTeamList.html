@@ -1,0 +1,14 @@
+<table class="table table-striped table-bordered table-hover">
+    <tr>
+        <th>Name</th>
+        <th># of moves</th>
+        <th># of trades</th>
+        <th>Logo</th>
+    </tr>
+    <tr ng-repeat="team in teams">
+        <td><a href="#/teams/{{team.team_key}}">{{team.name}}</a></td>
+        <td>{{team.number_of_moves}}</td>
+        <td>{{team.number_of_trades}}</td>
+        <td><img class="team-logo" ng-src="{{team.team_logos[0].team_logo.url}}" /></td>
+    </tr>
+</table>

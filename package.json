@@ -1,0 +1,19 @@
+{
+  "name": "coinlaundry",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "0.10.26"
+  },
+  "dependencies": {
+    "express": "3.3.5",
+    "ejs": "*",
+    "oauth": "jcreamer898/node-oauth",
+    "underscore": "~1.5.2",
+    "mongoose": "3.8.x",
+    "fantasysports": "^0.1.2"
+  }
+}
