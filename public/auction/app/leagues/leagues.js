@@ -6,17 +6,6 @@ angular.module('anal.leagues', ['ui.router', 'ui.bootstrap', 'anal.teams', 'anal
       ]
     );
 
-angular.module('anal.leagues').service('YahooLeaguesService', function ($http) {
-  this.getLeagues = function() {
-    var deferred = $q.defer();
-
-    return $http.get("/api/yahoo/leagues/").then(function success(response){
-      console.log('leagues', response.data);
-        return response.data;
-    });
-  };
-});
-
 angular.module('anal.leagues').service('LeaguesService', function ($http) {
     this.getLeagues = function () {
         return $http.get("api/leagues").then(function success(response) {
