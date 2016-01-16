@@ -18,7 +18,7 @@ define(function(require) {
     app.config(function($routeProvider) {
         $routeProvider
             .when("/", {
-                templateUrl: "/javascripts/views/home.html",
+                templateUrl: "/javascripts/views/index.html",
                 controller: "HomeCtrl",
                 controllerAs: "home"
             })
