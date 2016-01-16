@@ -1,0 +1,55 @@
+<div data-ng-controller="LeaguesController" data-ng-init="init()" style="">
+    <div class="span4">
+    <table class="table row-hover" style="width: 400px;">
+        <thead>
+            <th>
+                Name
+            </th>
+            <th>   </th>
+        </thead>
+        <tr data-ng-repeat="league in leagues">
+            <td data-ng-click="selectLeague(league)">
+               {{league.name}}
+            </td>
+            <td>
+                <a data-ng-click="removeLeague(league)" style="color:red;"><i class="icon-trash"></i></a>
+            </td>
+        </tr>
+    </table>
+        <form name="newLeagueForm" class="form-horizontal span2 pull-left" data-ng-submit="createLeague()">
+            <div style="span2">
+                <input ng-model="newLeagueName"/>
+            </div>
+
+            <button type="submit" class="btn btn-info" style="margin-top:10px;display:inline-block">Create</button>
+        </form>
+    </div>
+    <div class="span6 well" data-ng-show="selectedLeague">
+        <h3>{{selectedLeague.name}}</h3>
+        <tabset>
+            <tab heading="Teams">
+                <table class="table">
+                    <tr data-ng-repeat="team in selectedLeague.teams">
+                        <td>
+                           {{team.name}}
+                        </td>
+                    </tr>
+                </table>  
+            </tab>
+            <tab heading="Settings">
+                <p>Budget: {{selectedLeague.settings.draft_budget}}</p>
+                <p>Minimum Bid: {{selectedLeague.settings.minimum_bid}}</p>
+                <p>Roster Size: {{selectedLeague.settings.roster_size}}</p>
+            </tab>
+            <tab heading="Drafts">
+                <table class="table row-hover">
+                    <tr data-ng-repeat="draft in selectedLeague.drafts">
+                        <td ui-sref="draft({leagueId: selectedLeague.id, draftId: draft.id})">
+                           {{draft.year}}
+                        </td>
+                    </tr>
+                </table>
+            </tab>
+        </tabset>
+    </div>
+</div>

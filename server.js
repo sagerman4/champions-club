@@ -10,8 +10,6 @@ var express = require('express'),
 
 // all environments
 app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/server/views');
-app.set('view engine', 'ejs');
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
@@ -24,7 +22,7 @@ app.use(express.cookieSession({
 }));
 
 app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('C:\\Users\\IBM_ADMIN\\Projects\\champions-club\\public\\auction'));
 
 // development only
 if ('development' == app.get('env')) {

@@ -1,0 +1,65 @@
+body {
+  padding-top: 50px;
+  cursor: default;
+  height: 100%;
+  background: whitesmoke;
+}
+
+footer {
+  margin: 0 0 0 0;
+  padding: 20px 0 20px 0;
+  background: whitesmoke;
+  text-align: center;
+  /*z-index: 20000;*/
+  border-top: 1px solid #D4D4D4;
+  position:relative;
+}
+
+.main-page-content {
+  /*margin-bottom: 30px;*/
+  padding-bottom: 100px;
+  background-color: #fff;
+}
+
+.nav-header {
+    clear: both;
+}
+
+
+.row-hover tr:hover td {
+    background-color:#C5C5C5 !important;
+    cursor: pointer;
+}
+
+.row-hover tr a{
+  visibility:hidden;
+}
+
+.row-hover tr:hover a {
+ visibility:visible;
+}
+
+.chart {
+ width: 600px;
+ height: 200px;
+}
+
+.red {
+    color: red;
+}
+
+.green {
+    color: green;
+}
+
+.gridStyle {
+    border: 1px solid rgb(212,212,212);
+    width: 1500px; 
+    height: 300px
+}
+
+.lilGridStyle {
+    border: 1px solid rgb(212,212,212);
+    width: 480px; 
+    height: 330px
+}

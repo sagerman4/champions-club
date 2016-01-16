@@ -51,10 +51,7 @@ exports.index = function(req, res) {
 
                     if (err) throw err;
 
-                    res.render('index', { 
-                        title: 'Express',
-                        user: JSON.stringify(u)
-                    });
+                    res.redirect('/index.html');
                 });
             });
         });
