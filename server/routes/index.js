@@ -2,8 +2,7 @@
 /*
  * GET home page.
  */
-var User = require('../db/models/user'),
-    _ = require('underscore'),
+var _ = require('underscore'),
     FantasySports = require('FantasySports');
 
 FantasySports.options(require('../config.js'));
@@ -19,7 +18,6 @@ exports.index = function(req, res) {
         .done(function(data) {
             data = data.profile;
 
-            
             res.redirect('/index.html');
         });
 };  
