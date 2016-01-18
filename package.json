@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "express": "3.3.5",
-    "oauth": "jcreamer898/node-oauth",
+    "oauth": "ciaranj/node-oauth",
     "underscore": "~1.5.2",
     "fantasysports": "^0.1.2"
   }
