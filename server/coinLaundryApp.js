@@ -1,13 +1,11 @@
 'use strict';
 
 var routes = require('./routes'),
-    user = require('./routes/user'),
     api = require('./routes/api'),
     _ = require('underscore');
 
-function FantasyApp(app, db) {
+function FantasyApp(app) {
     this.app = app;
-    this.db = db;
 
     this.initialize();
 }
@@ -22,8 +20,6 @@ FantasyApp.prototype.setupRoutes = function() {
     this.app.get('/logout', routes.logout);
     this.app.get('/authorize', routes.authorize);
     
-    // API Routes
-    this.app.get('/api/users', user.list);
     _.each(api, function(route, name) {
         _.each(route, function(fn, verb) {
             this.app[verb]('/api/' + name, fn);
