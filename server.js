@@ -1,6 +1,12 @@
 'use strict';
 
 var express = require('express'),
+    bodyParser = require('body-parser'),
+    methodOverride = require('method-override'),
+    cookieParser = require('cookie-parser'),
+    cookieSession = require('cookie-session'),
+    logger = require('morgan'),
+    favicon = require('serve-favicon'),
     path = require('path'),
     _ = require('underscore'),
     app = express(),
@@ -8,12 +14,17 @@ var express = require('express'),
 
 // all environments
 app.set('port', process.env.PORT || 3000);
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(express.cookieParser());
-app.use(express.cookieSession({ 
+app.use(favicon('./favicon.ico'));
+app.use(logger('dev'));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json({
+  extended: true
+}));
+app.use(methodOverride());
+app.use(cookieParser());
+app.use(cookieSession({ 
     key: 'coinlaundry', 
     secret: 'theleague', 
     proxy: true 
