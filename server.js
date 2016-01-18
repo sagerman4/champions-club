@@ -3,7 +3,6 @@
 var express = require('express'),
     path = require('path'),
     _ = require('underscore'),
-    oa = require('./server/utils/oauth'),
     app = express(),
     CoinLaundry = require('./server/coinlaundryApp'),
     db = require('./server/db/context').db;

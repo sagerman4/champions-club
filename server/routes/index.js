@@ -2,8 +2,7 @@
 /*
  * GET home page.
  */
-var oa = require('../utils/oauth'),
-    User = require('../db/models/user'),
+var User = require('../db/models/user'),
     _ = require('underscore'),
     FantasySports = require('FantasySports');
 

@@ -1,5 +1,4 @@
-var oa = require('../utils/oauth'),
-    _ = require('underscore'),
+var _ = require('underscore'),
     fs = require('fs'),
     FantasySports = require('FantasySports');
 

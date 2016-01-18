@@ -3,8 +3,7 @@
 var routes = require('./routes'),
     user = require('./routes/user'),
     api = require('./routes/api'),
-    _ = require('underscore'),
-    oa = require('./utils/oauth');
+    _ = require('underscore');
 
 function FantasyApp(app, db) {
     this.app = app;
