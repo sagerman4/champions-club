@@ -1,37 +1,44 @@
 'use strict';
 
 var express = require('express'),
+    bodyParser = require('body-parser'),
+    methodOverride = require('method-override'),
+    cookieParser = require('cookie-parser'),
+    cookieSession = require('cookie-session'),
+    logger = require('morgan'),
+    favicon = require('serve-favicon'),
     path = require('path'),
     _ = require('underscore'),
-    oa = require('./server/utils/oauth'),
     app = express(),
-    CoinLaundry = require('./server/coinlaundryApp'),
-    db = require('./server/db/context').db;
+    ServerApp = require('./server/app');
 
 // all environments
 app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/server/views');
-app.set('view engine', 'ejs');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.bodyParser());
-app.use(express.methodOverride());
-app.use(express.cookieParser());
-app.use(express.cookieSession({ 
-    key: 'coinlaundry', 
+app.use(favicon('./favicon.ico'));
+app.use(logger('dev'));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json({
+  extended: true
+}));
+app.use(methodOverride());
+app.use(cookieParser());
+app.use(cookieSession({ 
+    key: 'championsclub', 
     secret: 'theleague', 
     proxy: true 
 }));
 
 app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('C:\\Users\\IBM_ADMIN\\Projects\\champions-club\\public\\auction'));
 
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.coinlaundry = new CoinLaundry(app, db);
+app.serverApp = new ServerApp(app);
 
 var server = app.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

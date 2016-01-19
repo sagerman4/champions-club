@@ -2,9 +2,7 @@
 /*
  * GET home page.
  */
-var oa = require('../utils/oauth'),
-    User = require('../db/models/user'),
-    _ = require('underscore'),
+var _ = require('underscore'),
     FantasySports = require('FantasySports');
 
 FantasySports.options(require('../config.js'));
@@ -20,43 +18,7 @@ exports.index = function(req, res) {
         .done(function(data) {
             data = data.profile;
 
-            User.findOne({ 
-                'yahoo_id': req.session.xoauthYahooGuid 
-            }, function(err, user) {
-                if (!user) {
-                    user = new User({
-                        yahoo_id: req.session.xoauthYahooGuid,
-                        displayAge: data.displayAge,
-                        gender: data.gender,
-                        imageUrl: data.image.imageUrl,
-                        location: data.location,
-                        nickname: data.nickname,
-                        profileUrl: data.profileUrl
-                    });
-                }
-                else {
-                    user.displayAge = data.displayAge;
-                    user.gender = data.gender;
-                    user.imageUrl = data.image.imageUrl;
-                    user.location = data.location;
-                    user.nickname = data.nickname;
-                    user.profileUrl = data.profileUr;
-                }
-
-                user.save(function(err) {
-                    var u = user.toObject();
-                    
-                    delete u._id;
-                    delete u._v;
-
-                    if (err) throw err;
-
-                    res.render('index', { 
-                        title: 'Express',
-                        user: JSON.stringify(u)
-                    });
-                });
-            });
+            res.redirect('/index.html');
         });
 };  
 

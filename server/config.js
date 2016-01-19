@@ -1,3 +1,5 @@
+// This file is used to provide configuration for the fantasysports node module, which provides oauth access for Yahoo!.
+//  It's pretty dope.
 module.exports = {
     "accessTokenUrl": "https://api.login.yahoo.com/oauth/v2/get_request_token",
     "requestTokenUrl": "https://api.login.yahoo.com/oauth/v2/get_token",
