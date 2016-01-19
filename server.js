@@ -10,7 +10,7 @@ var express = require('express'),
     path = require('path'),
     _ = require('underscore'),
     app = express(),
-    CoinLaundry = require('./server/coinlaundryApp');
+    ServerApp = require('./server/app');
 
 // all environments
 app.set('port', process.env.PORT || 3000);
@@ -25,7 +25,7 @@ app.use(bodyParser.json({
 app.use(methodOverride());
 app.use(cookieParser());
 app.use(cookieSession({ 
-    key: 'coinlaundry', 
+    key: 'championsclub', 
     secret: 'theleague', 
     proxy: true 
 }));
@@ -38,7 +38,7 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.coinlaundry = new CoinLaundry(app);
+app.serverApp = new ServerApp(app);
 
 var server = app.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
