@@ -1,7 +1,9 @@
-angular.module('anal.draft', ['ui.router', 'ui.bootstrap', 'anal.teams', 'anal.drafts', 'anal.draftPicks', 'anal.players', 'angularCharts', 'anal.leagues', 'ngGrid', 'ngGridPlugins'])
+angular.module('anal.draft', ['ui.router', 'ui.bootstrap', 'anal.teams', 'anal.drafts', 'anal.draftPicks', 'anal.players', 'angularCharts', 'anal.leagues', 'ngGrid', 'ngGridPlugins', 'anal.league'])
         .config(['$stateProvider',
             function ($stateProvider) {
-                $stateProvider.state('draft', {url: '/draft', templateUrl: 'draft.html'});
+                $stateProvider
+                .state('draft', {url: '/draft', templateUrl: 'draft.html'})
+                .state('league', {url: "/leagues/:id", templateUrl: "league.html"});
             }
         ]);
 
@@ -43,7 +45,7 @@ angular.module('anal.draft').service('DraftService', function ($http) {
     };
 });
 
-angular.module('anal.draft').controller('DraftController', ['$scope', '$state', '$stateParams', 'DraftService', 'TeamsService', 'DraftsService', 'DraftPicksService', 'PlayersService', 'LeaguesService', 'ngGridPlugins', function ($scope, $state, $stateParams, DraftService, TeamsService, DraftsService, DraftPicksService, PlayersService, LeaguesService, ngGridPlugins) {
+angular.module('anal.draft').controller('DraftController', ['$scope', '$state', '$stateParams', 'DraftService', 'TeamsService', 'DraftsService', 'DraftPicksService', 'PlayersService', 'LeaguesService', 'ngGridPlugins', 'LeagueService', function ($scope, $state, $stateParams, DraftService, TeamsService, DraftsService, DraftPicksService, PlayersService, LeaguesService, ngGridPlugins, LeagueService) {
         $scope.chartDataPointsByPosition = [];
 
         $scope.init = function () {
@@ -54,26 +56,29 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
 
         $scope.selectLeague = function (league) {
             $scope.league = league;
-            DraftService.getLeaguePositionConfig($scope.league.id).then(function (data) {
-                $scope.leaguePositions = data;
-                DraftsService.getDraft($scope.league.id).then(function (data) {
-                    $scope.draft = data;
-                    DraftPicksService.getDraftPicks($scope.league.id, $scope.draft.id).then(function (data) {
-                        $scope.picks = data.sort(compare);
-                        for (var i in $scope.picks) {
-                            $scope.picks[i].percentagePaid = (-$scope.calculatePercentage($scope.picks[i])) + '%';
-                        }
-                        $scope.getCurrentPick();
-                        $scope.newPrice = 1;
-                        DraftService.getDraftTeams($scope.league.id, $scope.draft.id).then(function (data) {
-                            $scope.draftTeams = data;
-                            $scope.calculateDraftTeamPercentages();
-                        });
-                        $scope.calculatePositionalStats();
-                        $scope.getAvailablePlayers();
-                    });
-                });
+            LeagueService.getDraftResults($scope.league.league_key).then(function(data){
+                console.log(data);
             });
+            // DraftService.getLeaguePositionConfig($scope.league.id).then(function (data) {
+            //     $scope.leaguePositions = data;
+            //     DraftsService.getDraft($scope.league.id).then(function (data) {
+            //         $scope.draft = data;
+            //         DraftPicksService.getDraftPicks($scope.league.id, $scope.draft.id).then(function (data) {
+            //             $scope.picks = data.sort(compare);
+            //             for (var i in $scope.picks) {
+            //                 $scope.picks[i].percentagePaid = (-$scope.calculatePercentage($scope.picks[i])) + '%';
+            //             }
+            //             $scope.getCurrentPick();
+            //             $scope.newPrice = 1;
+            //             DraftService.getDraftTeams($scope.league.id, $scope.draft.id).then(function (data) {
+            //                 $scope.draftTeams = data;
+            //                 $scope.calculateDraftTeamPercentages();
+            //             });
+            //             $scope.calculatePositionalStats();
+            //             $scope.getAvailablePlayers();
+            //         });
+            //     });
+            // });
         };
 
         $scope.selectTeam = function () {

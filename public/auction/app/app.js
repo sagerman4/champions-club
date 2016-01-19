@@ -1,4 +1,4 @@
-var anal = angular.module('anal', ['ui.router', 'ui.bootstrap', 'angularCharts', 'anal.leagues', 'anal.teams', 'anal.players', 'anal.drafts', 'anal.draft', 'anal.draftPicks', 'ngGrid', 'ngGridPlugins']);
+var anal = angular.module('anal', ['ui.router', 'ui.bootstrap', 'angularCharts', 'anal.leagues', 'anal.league', 'anal.teams', 'anal.players', 'anal.drafts', 'anal.draft', 'anal.draftPicks', 'ngGrid', 'ngGridPlugins']);
 
 anal.config(['$urlRouterProvider', '$stateProvider', function($urlRouterProvider, $stateProvider) {
     $urlRouterProvider.otherwise("/draft");

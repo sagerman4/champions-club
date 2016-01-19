@@ -30,6 +30,9 @@ http://fantasysports.yahooapis.com/fantasy/v2/league/331.l.198983/transactions?f
         </player>
     </transaction>
 </fantasy_content>
+
+Draft Results
+http://fantasysports.yahooapis.com/fantasy/v2/league/<leagueId>/draftresults
 */
 module.exports = {
     'profile/:id': {
@@ -41,6 +44,18 @@ module.exports = {
                     res.json(data.profile);
                 });
         }
+    },
+    'leagues/:id/draftResults': {
+        get: function(req, res) {
+          FantasySports.request(req, res)
+             .api('http://fantasysports.yahooapis.com/fantasy/v2/league/' + req.params.id + '/draftresults?format=json')
+             .done(function(data) {
+                console.log('draftResults', data);
+                res.json(data);
+            }, function(err) {
+                res.send(err);
+            });
+         }
     },
     'leagues/:id/players': {
         get: function(req, res) {

@@ -8,7 +8,7 @@
             <th>   </th>
         </thead>
         <tr data-ng-repeat="league in leagues">
-            <td data-ng-click="selectLeague(league)">
+            <td data-ui-sref="league({ id: league.league_key })">
                {{league.name}}
             </td>
             <td>
