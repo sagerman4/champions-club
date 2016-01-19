@@ -57,8 +57,58 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
         $scope.selectLeague = function (league) {
             $scope.league = league;
             LeagueService.getDraftResults($scope.league.league_key).then(function(data){
-                console.log(data);
+                var draftResults = data.fantasy_content.league[1].draft_results;
+                $scope.playerKeys = [];
+                _.each(draftResults, function(result) {
+                    // var player = PlayersService.getPlayer(result.draft_result.player_key);
+                    if(result.draft_result){
+                        $scope.playerKeys.push(result.draft_result.player_key);
+                    }   
+                });
+
+                $scope.playerResults = [];
+
+                var callback = function(data){
+                    $scope.playerResults = $scope.playerResults.concat(data);
+                    if(data.length===$scope.playerKeys.length){
+                        return;
+                    }
+                    $scope.playerKeys.splice(0,25);
+                    PlayersService.getPlayers(league.league_key, $scope.playerKeys).then(callback);
+                };
+
+                PlayersService.getPlayers(league.league_key, $scope.playerKeys).then(callback);
             });
+
+// "draft_results": {
+//           "0": {
+//             "draft_result": {
+//               "pick": 1,
+//               "round": 1,
+//               "cost": "32",
+//               "team_key": "348.l.47496.t.3",
+//               "player_key": "348.p.4256"
+//             }
+//           },
+//           "1": {
+//             "draft_result": {
+//               "pick": 2,
+//               "round": 1,
+//               "cost": "32",
+//               "team_key": "348.l.47496.t.12",
+//               "player_key": "348.p.5479"
+//             }
+//           },
+//           "2": {
+//             "draft_result": {
+//               "pick": 3,
+//               "round": 1,
+//               "cost": "2",
+//               "team_key": "348.l.47496.t.6",
+//               "player_key": "348.p.6760"
+//             }
+//           },
+
             // DraftService.getLeaguePositionConfig($scope.league.id).then(function (data) {
             //     $scope.leaguePositions = data;
             //     DraftsService.getDraft($scope.league.id).then(function (data) {

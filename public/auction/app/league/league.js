@@ -15,14 +15,18 @@ angular.module('anal.league').service('LeagueService', function ($http) {
     };
 });
 
-angular.module('anal.league').controller('LeagueController', ['$stateParams', '$scope', '$state', 'LeagueService', 'TeamsService', 'DraftsService', function($scope, $state, LeaguesService, TeamsService, DraftsService){
-    $scope.junk = 'junkie;'
-    // $scope.init = function() {
-    //   console.log('please work');
-    //   $scope.leagueId = $stateParams.id;
-    //   console.log('leaguecontroller, id=' + $scope.leagueId);
-    //    LeaguesService.getDraftResults($scope.leagueId).then(function(data){
-    //       $scope.draftResults = data;
-    //    }); 
-    // };
-}]);
+angular.module('anal.league').controller('LeagueController', 
+    ['$stateParams', '$scope', '$state', 'LeagueService', 'TeamsService', 'DraftsService', 
+        function($scope, $state, LeaguesService, TeamsService, DraftsService){
+            $scope.junk = 'junkie;'
+            // $scope.init = function() {
+            //   console.log('please work');
+            //   $scope.leagueId = $stateParams.id;
+            //   console.log('leaguecontroller, id=' + $scope.leagueId);
+            //    LeaguesService.getDraftResults($scope.leagueId).then(function(data){
+            //       $scope.draftResults = data;
+            //    }); 
+            // };
+        }
+    ]
+);
