@@ -2,36 +2,34 @@
 <html id="ng-app">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>Auction Analizer</title>
+    <title>Messenger</title>
     <meta charset="utf-8"/>
 
     <link type="text/css" rel="stylesheet" href="resources/bootstrap/bootstrap.min.css"/>
     <link type="text/css" rel="stylesheet" href="resources/font-awesome/css/font-awesome.min.css"/>
     <link type="text/css" rel="stylesheet" href="resources/animate/animate.css"/>
-    <link type="text/css" rel="stylesheet" href="resources/ng-grid/ng-grid.css"/>
     <link type="text/css" rel="stylesheet" href="app/css/app.css"/>
-    <script type="text/javascript" src="resources/lodash/lodash.js"></script>
-    <script type="text/javascript" src="resources/jquery/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="resources/angular/angular.js"></script>
     <script type="text/javascript" src="resources/ui-router/angular-ui-router.js"></script>
     <script type="text/javascript" src="resources/angular-ui/ui-bootstrap-tpls-0.8.0.min.js"></script>
-    <script type="text/javascript" src="resources/d3/d3.min.js"></script>
-    <script type="text/javascript" src="resources/angular-charts/angular-charts.min.js"></script>
-    <script type="text/javascript" src="resources/ng-grid/ng-grid-2.0.13.min.js"></script>
+    <script type="text/javascript" src="app/new.js"></script>
     <script type="text/javascript" src="app/app.js"></script>
-    <script type="text/javascript" src="app/leagues/leagues.js"></script>
-    <script type="text/javascript" src="app/teams/teams.js"></script>
-    <script type="text/javascript" src="app/players/players.js"></script>
-    <script type="text/javascript" src="app/drafts/drafts.js"></script>
-    <script type="text/javascript" src="app/draftPicks/draftPicks.js"></script>
-    <script type="text/javascript" src="app/draft/draft.js"></script>
-    <script type="text/javascript" src="resources/ng-grid/ngGridPlugins.js"></script>
-  </head> 
-  <body data-ng-app="anal">
+  </head>
+  <body data-ng-app="messages">
     <div class="navbar navbar-inverse navbar-fixed-top" data-ng-controller="NavController" data-ng-init="init()">
       <div class="navbar-inner">
 
-        <a data-ui-sref="dashboard.overview" class="brand" style="font-weight: bold; color: white">&nbsp; Analizer</a>
+        <a data-ui-sref="dashboard.overview" class="brand" style="font-weight: bold; color: white">&nbsp; Messages</a>
+        <ul class="nav">
+          <li class="dropdown" data-ng-class="{active: $state.includes('messages')}">
+            <a class="dropdown-toggle" data-toggle="dropdown" data-ui-sref="messages">Messages({{total}})</a>
+          </li>
+        </ul>
+        <ul class="nav">
+          <li class="dropdown" data-ng-class="{active: $state.includes('new')}">
+            <a class="dropdown-toggle" data-toggle="dropdown" data-ui-sref="new">New</a>
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -44,13 +42,13 @@
     </div>
     <footer id="footer">
       <p class="muted">
-        <small>Your Auction Just Got Analized</small>
+        <small>Really Basic Useless Messages App</small>
       </p>
       <small class="muted">About</small>&nbsp;&nbsp;&nbsp;<span class="muted">-</span>&nbsp;&nbsp;&nbsp;
       <small class="muted"><a class="muted" target="_blank" data-ui-sref="help">Documentation</a></small>&nbsp;&nbsp;&nbsp;<span class="muted">-</span>&nbsp;&nbsp;&nbsp;
       <small class="muted"><a class="muted" target="_blank" data-ui-sref="support">Support</a></small>&nbsp;&nbsp;&nbsp;
 
-      <h4 class="muted">Auction Analizer</h4>
+      <h4 class="muted">Messenger</h4>
 
     </footer>
     <div class="loading-widget loading-overlay" style="display: none">

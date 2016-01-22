@@ -27,7 +27,7 @@ footer {
 
 
 .row-hover tr:hover td {
-    background-color:#C5C5C5 !important;
+    background-color:#F5F5F5 !important;
     cursor: pointer;
 }
 
@@ -37,29 +37,4 @@ footer {
 
 .row-hover tr:hover a {
  visibility:visible;
-}
-
-.chart {
- width: 600px;
- height: 200px;
-}
-
-.red {
-    color: red;
-}
-
-.green {
-    color: green;
-}
-
-.gridStyle {
-    border: 1px solid rgb(212,212,212);
-    width: 1500px; 
-    height: 300px
-}
-
-.lilGridStyle {
-    border: 1px solid rgb(212,212,212);
-    width: 480px; 
-    height: 330px
 }

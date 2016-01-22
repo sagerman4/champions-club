@@ -1,0 +1,32 @@
+<div data-ng-controller="MessagesController" data-ng-init="init()" style="">
+    <div class="span4">
+    <table class="table row-hover" style="width: 400px;">
+        <thead>
+            <th>
+                Subject
+            </th>
+            <th>
+                Body
+            </th>
+            <th>   </th>
+        </thead>
+        <tr data-ng-repeat="message in messages">
+            <td data-ng-click="selectMessage(message)">
+               {{message.subject}}
+            </td>
+            <td data-ng-click="selectMessage(message)">
+               {{message.body.slice(0,20)}}...
+            </td>
+            <td>
+                <a data-ng-click="removeMessage(message)" style="color:red;"><i class="icon-trash"></i></a>
+            </td>
+        </tr>
+    </table>
+    </div>
+    <div class="span6" data-ng-show="selectedMessage">
+        <div class="well">
+            <h3>{{selectedMessage.subject}}</h3>
+            <p>{{selectedMessage.body}}</p>
+        </div>
+    </div>
+</div>
