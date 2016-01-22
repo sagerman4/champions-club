@@ -1,20 +1,20 @@
-var messages = angular.module('messages', ['ui.router', 'ui.bootstrap', 'messages.new']);
+var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'app.api-explorer']);
 
-messages.config(['$urlRouterProvider', '$stateProvider', function($urlRouterProvider, $stateProvider) {
+app.config(['$urlRouterProvider', '$stateProvider', function($urlRouterProvider, $stateProvider) {
     $urlRouterProvider.otherwise("/messages");
     $stateProvider
           .state('messages', {url: "/messages", templateUrl: "messages.html"})
-          .state('new', {url: "/new", templateUrl: "new.html"});
+          .state('api-explorer', {url: "/api-explorer", templateUrl: "api-explorer.html"});
   }]);
 
-messages.controller('NavController', ['$scope', '$state', 'MessagesService', function($scope, $state, MessagesService) {
+app.controller('NavController', ['$scope', '$state', 'MessagesService', function($scope, $state, MessagesService) {
   $scope.init = function() {
     $scope.$state = $state;
     $scope.total = MessagesService.getMessages().length;
   };
 }]);
 
-messages.service('MessagesService', function ($http) {
+app.service('MessagesService', function ($http) {
     this.getMessages = function () {
         return [{subject: 'something', body: 'adriana'},{subject: 'something', body: 'rachel leigh'}];
     };
@@ -36,7 +36,7 @@ messages.service('MessagesService', function ($http) {
     };
 });
 
-messages.controller('MessagesController', ['$scope', '$state', 'MessagesService', function($scope, $state, MessagesService){
+app.controller('MessagesController', ['$scope', '$state', 'MessagesService', function($scope, $state, MessagesService){
     $scope.init = function() {
        $scope.messages = MessagesService.getMessages();
     }; 
@@ -54,7 +54,7 @@ messages.controller('MessagesController', ['$scope', '$state', 'MessagesService'
     };
 }]);
 
-messages.config(['$httpProvider', function($httpProvider) {
+app.config(['$httpProvider', function($httpProvider) {
    $httpProvider.interceptors.push(function() {
       return {
         request: function(config) {
