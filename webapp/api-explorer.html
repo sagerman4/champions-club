@@ -1,0 +1,19 @@
+<div data-ng-controller="NewMessageController" data-ng-init="init()">
+    <form name="newMessageForm" class="form-horizontal span2 pull-left" data-ng-submit="createMessage()">
+        <div style="span2">
+            <h4>Subject</h4>
+        </div>
+        <div style="span2">
+            <input ng-model="subject"/>
+        </div>
+        <br/>
+        <div style="span2">
+            <h4>Body</h4>
+        </div>
+        <div style="span2">
+            <textarea ng-model="body"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-info" style="margin-top:10px;display:inline-block">Send</button>
+    </form>
+</div>
