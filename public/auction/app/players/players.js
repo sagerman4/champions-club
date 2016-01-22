@@ -20,7 +20,6 @@ angular.module('anal.players').service('PlayersService', function ($http) {
         return $http.get('api/leagues/' + leagueId + '/players' + keysString)
             .then(
                 function success(response) {
-                    console.log('number of results: ', response.data.length);
                     return response.data;
                 }
             );

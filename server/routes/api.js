@@ -91,7 +91,6 @@ module.exports = {
           FantasySports.request(req, res)
              .api('http://fantasysports.yahooapis.com/fantasy/v2/league/' + req.params.id + '/draftresults?format=json')
              .done(function(data) {
-                console.log('draftResults', data);
                 res.json(data);
             }, function(err) {
                 res.send(err);
@@ -112,7 +111,8 @@ module.exports = {
 
                     var playerData = data.fantasy_content.league[1].players,
                         players = [],
-                        player = {};
+                        player = {},
+                        stats = {};
 
 
 
@@ -127,11 +127,21 @@ module.exports = {
                                 } 
                             });
 
+                            stats = {};
+                            _.each(value.player[1], function(kvp) {
+                                if (kvp === Object(kvp)) {
+                                    _.each(kvp, function(val, key) {
+                                        stats[key] = val;
+                                    });
+                                } 
+                            });
+
+
                             if (value.player[1] && value.player[1].player_stats) {
                                 player.points = value.player[1].player_points.total;
                             }
 
-                            player.stats = value.player[1];
+                            player.stats = stats;
                             players.push(player);
                         }
 
@@ -178,16 +188,16 @@ module.exports = {
         get: function(req, res) {
             FantasySports
                 .request(req, res)
-                .api('http://fantasysports.yahooapis.com/fantasy/v2/league/' + req.params.id + '/teams?format=json')
+                .api('http://fantasysports.yahooapis.com/fantasy/v2/league/' + req.params.id + '/teams/roster?format=json')
                 .done(function(data) {
                     var teamData = data.fantasy_content.league[1].teams,
                         teams = [],
-                        team;
+                        team,
+                        roster;
 
                     _.each(teamData, function(value) {
                         if (value.team) {
                             team = {};
-                            
                             _.each(value.team[0], function(kvp) {
                                 if (kvp === Object(kvp)) {
                                     _.each(kvp, function(val, key) {
@@ -195,6 +205,27 @@ module.exports = {
                                     });
                                 } 
                             });
+
+                            roster = {};
+                            roster.week = value.team[1].roster.week;
+                            roster.is_editable = value.team[1].roster.is_editable;
+
+                            var players = [];
+
+                            _.each(value.team[1].roster['0'].players, function(playerObject){
+                                if(playerObject.player){
+                                    var player = {};
+                                    _.each(playerObject.player[0], function(attribute){
+                                        _.each(attribute, function(val, key){
+                                            player[key] = val;
+                                        });
+                                    });
+                                    players.push(player);
+                                }
+                            });
+
+                            roster.players = players;
+                            team.roster = roster;
 
                             teams.push(team);
                         }

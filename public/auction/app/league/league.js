@@ -8,8 +8,8 @@ angular.module('anal.league').service('LeagueService', function ($http) {
         });
     };
 
-    this.getTeams = function () {
-        return $http.get("api/leagues").then(function success(response) {
+    this.getTeams = function (leagueId) {
+        return $http.get('api/leagues/' + leagueId + '/teams').then(function success(response) {
             return response.data;
         });
     };

@@ -56,29 +56,57 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
 
         $scope.selectLeague = function (league) {
             $scope.league = league;
-            LeagueService.getDraftResults($scope.league.league_key).then(function(data){
-                var draftResults = data.fantasy_content.league[1].draft_results;
-                $scope.playerKeys = [];
-                _.each(draftResults, function(result) {
-                    // var player = PlayersService.getPlayer(result.draft_result.player_key);
-                    if(result.draft_result){
-                        $scope.playerKeys.push(result.draft_result.player_key);
-                    }   
-                });
+            LeagueService.getTeams($scope.league.league_key).then(function(data){
+                $scope.teams = data;
+                LeagueService.getDraftResults($scope.league.league_key).then(function(data){
+                    $scope.draftResults = data.fantasy_content.league[1].draft_results;
+                    $scope.playerKeys = [];
+                    _.each($scope.draftResults, function(result) {
+                        // var player = PlayersService.getPlayer(result.draft_result.player_key);
+                        if(result.draft_result){
+                            $scope.playerKeys.push(result.draft_result.player_key);
+                        }   
+                    });
 
-                $scope.playerResults = [];
+                    $scope.playerResults = [];
 
-                var callback = function(data){
-                    $scope.playerResults = $scope.playerResults.concat(data);
-                    if(data.length===$scope.playerKeys.length){
-                        return;
-                    }
-                    $scope.playerKeys.splice(0,25);
+                    var callback = function(data){
+                        $scope.playerResults = $scope.playerResults.concat(data);
+                        if(data.length===$scope.playerKeys.length){
+                            $scope.organizeIntoTeams();
+                            return;
+                        }
+                        $scope.playerKeys.splice(0,25);
+                        PlayersService.getPlayers(league.league_key, $scope.playerKeys).then(callback);
+                    };
+
                     PlayersService.getPlayers(league.league_key, $scope.playerKeys).then(callback);
-                };
-
-                PlayersService.getPlayers(league.league_key, $scope.playerKeys).then(callback);
+                });
             });
+        };
+
+        $scope.organizeIntoTeams = function() {
+            _.each($scope.teams, function(team){
+                if(!team.draftedPlayers){
+                    team.draftedPlayers = [];
+                }
+                _.each($scope.draftResults, function(result){
+                    if(result.draft_result && result.draft_result.team_key===team.team_key){
+                        _.every($scope.playerResults, function(player){
+                            if(player.player_key===result.draft_result.player_key){
+                                player.pick = result.draft_result.pick;
+                                player.round = result.draft_result.round;
+                                player.cost = result.draft_result.cost;
+                                team.draftedPlayers.push(player);
+                                return false;
+                            }
+                            return true;
+                        });
+                    }
+                });
+            });
+            console.log('teams', $scope.teams);
+        };
 
 // "draft_results": {
 //           "0": {
@@ -109,27 +137,6 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
 //             }
 //           },
 
-            // DraftService.getLeaguePositionConfig($scope.league.id).then(function (data) {
-            //     $scope.leaguePositions = data;
-            //     DraftsService.getDraft($scope.league.id).then(function (data) {
-            //         $scope.draft = data;
-            //         DraftPicksService.getDraftPicks($scope.league.id, $scope.draft.id).then(function (data) {
-            //             $scope.picks = data.sort(compare);
-            //             for (var i in $scope.picks) {
-            //                 $scope.picks[i].percentagePaid = (-$scope.calculatePercentage($scope.picks[i])) + '%';
-            //             }
-            //             $scope.getCurrentPick();
-            //             $scope.newPrice = 1;
-            //             DraftService.getDraftTeams($scope.league.id, $scope.draft.id).then(function (data) {
-            //                 $scope.draftTeams = data;
-            //                 $scope.calculateDraftTeamPercentages();
-            //             });
-            //             $scope.calculatePositionalStats();
-            //             $scope.getAvailablePlayers();
-            //         });
-            //     });
-            // });
-        };
 
         $scope.selectTeam = function () {
             if ($scope.selectedTeamString) {
