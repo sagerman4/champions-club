@@ -1,19 +1,14 @@
-<div data-ng-controller="NewMessageController" data-ng-init="init()">
-    <form name="newMessageForm" class="form-horizontal span2 pull-left" data-ng-submit="createMessage()">
+<div data-ng-controller="ApiExplorerController" data-ng-init="init()">
+    <form name="newMessageForm" class="form-horizontal span2 pull-left" data-ng-submit="executeCall()">
         <div style="span2">
-            <h4>Subject</h4>
+            <h4>URL</h4>
         </div>
-        <div style="span2">
-            <input ng-model="subject"/>
-        </div>
-        <br/>
-        <div style="span2">
-            <h4>Body</h4>
-        </div>
-        <div style="span2">
-            <textarea ng-model="body"></textarea>
+        <div style="span8">
+            http://fantasysports.yahooapis.com/fantasy/v2/<input style='width:500px' ng-model="apiurl"/>
         </div>
         
+        {{$scope.results}}
+
         <button type="submit" class="btn btn-info" style="margin-top:10px;display:inline-block">Send</button>
     </form>
 </div>

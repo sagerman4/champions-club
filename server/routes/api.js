@@ -44,24 +44,26 @@ module.exports = {
     },
     'leagues/:id/players': {
         get: function(req, res) {
-            var queryString = _.map(req.query, function(val, key) {
-                return key + '=' + val;
-            }).join(';');  
+            var keys = _.map(req.query, function(val, key) {
+                return val;
+            }).join();  
 
             FantasySports
                 .request(req, res)
-                .api('http://fantasysports.yahooapis.com/fantasy/v2/league/' + req.params.id + '/players;' + 
-                    queryString + 
-                    '?format=json')
+                .api('http://fantasysports.yahooapis.com/fantasy/v2/league/' + req.params.id + '/players;player_keys=' + 
+                    keys + '/stats?format=json')
                 .done(function(data) {
+
                     var playerData = data.fantasy_content.league[1].players,
                         players = [],
-                        player = {};
+                        player = {},
+                        stats = {};
+
+
 
                     _.each(playerData, function(value) {
                         if (value.player) {
                             player = {};
-                            
                             _.each(value.player[0], function(kvp) {
                                 if (kvp === Object(kvp)) {
                                     _.each(kvp, function(val, key) {
@@ -70,10 +72,79 @@ module.exports = {
                                 } 
                             });
 
+                            stats = {};
+                            _.each(value.player[1], function(kvp) {
+                                if (kvp === Object(kvp)) {
+                                    _.each(kvp, function(val, key) {
+                                        stats[key] = val;
+                                    });
+                                } 
+                            });
+
+
                             if (value.player[1] && value.player[1].player_stats) {
                                 player.points = value.player[1].player_points.total;
                             }
 
+                            player.stats = stats;
+                            players.push(player);
+                        }
+
+                    });
+
+                    res.json(players);
+                }, function(err) {
+                    res.send(err);
+                });
+
+            
+        }
+    },
+    'leagues/:id/players/weeks/:week': {
+        get: function(req, res) {
+            var keys = _.map(req.query, function(val, key) {
+                return val;
+            }).join();  
+
+            FantasySports
+                .request(req, res)
+                .api('http://fantasysports.yahooapis.com/fantasy/v2/league/' + req.params.id + '/players;player_keys=' + 
+                    keys + '/stats;type=week;week=' + req.params.week + '?format=json')
+                .done(function(data) {
+
+                    var playerData = data.fantasy_content.league[1].players,
+                        players = [],
+                        player = {},
+                        stats = {};
+
+
+
+                    _.each(playerData, function(value) {
+                        if (value.player) {
+                            player = {};
+                            _.each(value.player[0], function(kvp) {
+                                if (kvp === Object(kvp)) {
+                                    _.each(kvp, function(val, key) {
+                                        player[key] = val;
+                                    });
+                                } 
+                            });
+
+                            stats = {};
+                            _.each(value.player[1], function(kvp) {
+                                if (kvp === Object(kvp)) {
+                                    _.each(kvp, function(val, key) {
+                                        stats[key] = val;
+                                    });
+                                } 
+                            });
+
+
+                            if (value.player[1] && value.player[1].player_stats) {
+                                player.points = value.player[1].player_points.total;
+                            }
+
+                            player.stats = stats;
                             players.push(player);
                         }
 
@@ -188,6 +259,30 @@ module.exports = {
                 });
         }
     },
+    'leagues/:id/draftResults': {
+        get: function(req, res) {
+          FantasySports.request(req, res)
+             .api('http://fantasysports.yahooapis.com/fantasy/v2/league/' + req.params.id + '/draftresults?format=json')
+             .done(function(data) {
+                res.json(data);
+            }, function(err) {
+                res.send(err);
+            });
+         }
+    },
+    apiexplorer: {
+        get: function(req, res) {
+            FantasySports
+                .request(req, res)
+                .api('http://fantasysports.yahooapis.com/fantasy/v2/' + req.query.url + '?format=json')
+                .done(function(json) {
+                    console.log('results of the new thing', json);
+                    res.json(json);
+                });
+        }
+    },
+    //348.l.72983
+    //league/348.l.72983/players;player_keys=348.p.4271/stats;type=week;week=2
     teams: {
         get: function(req, res) {
             FantasySports

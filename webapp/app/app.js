@@ -1,10 +1,11 @@
-var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'app.api-explorer']);
+var app = angular.module('app', ['ui.router', 'ui.bootstrap', 'app.api-explorer', 'app.leagues', 'app.league', 'app.players', 'app.bestdraft']);
 
 app.config(['$urlRouterProvider', '$stateProvider', function($urlRouterProvider, $stateProvider) {
     $urlRouterProvider.otherwise("/messages");
     $stateProvider
           .state('messages', {url: "/messages", templateUrl: "messages.html"})
-          .state('api-explorer', {url: "/api-explorer", templateUrl: "api-explorer.html"});
+          .state('api-explorer', {url: "/api-explorer", templateUrl: "api-explorer.html"})
+          .state('bestdraft', {url: "/bestdraft", templateUrl: "bestdraft.html"});
   }]);
 
 app.controller('NavController', ['$scope', '$state', 'MessagesService', function($scope, $state, MessagesService) {
