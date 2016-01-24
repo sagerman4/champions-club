@@ -13,4 +13,10 @@ angular.module('app.league').service('LeagueService', function ($http) {
             return response.data;
         });
     };
+
+    this.getTransactions = function (id) {
+        return $http.get("api/leagues/" + id + "/transactions").then(function success(response) {
+            return response.data;
+        });
+    };
 });

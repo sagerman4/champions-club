@@ -45,14 +45,11 @@ angular.module('app.bestdraft').controller('BestDraftController', ['$scope', '$s
             weeks.push({players: [], keys: $scope.keys.slice(0)});
 
             var callback = function(data){
-              console.log(data);
               _.each(data, function(player){
                 var element = {key: player.player_key, points: player.stats.total};
                 weeks[$scope.week].players.push(element);
               });
               weeks[$scope.week].keys.splice(0,25);
-
-              console.log('$scope.week', $scope.week);
 
               if(weeks[$scope.week].players.length===$scope.keys.length){
                 $scope.week++;
@@ -60,8 +57,27 @@ angular.module('app.bestdraft').controller('BestDraftController', ['$scope', '$s
               if($scope.week!==16){
                 PlayersService.getWeeklyStats($scope.league.league_key, weeks[$scope.week].keys, $scope.week+1).then(callback);
               }
-              if($scope.week===16){
-                console.log('177777777777777777', weeks);
+              if($scope.week===1){
+                LeagueService.getTransactions($scope.league.league_key).then(function(results){
+                  _.each(results.transactions, function(transaction){
+                    if(transaction.transaction && transaction.transaction[0] && transaction.transaction[0].type==='trade') {
+
+                    console.log(transaction.transaction[0].trader_team_name + ' trading to ' + transaction.transaction[0].tradee_team_name);
+
+                    _.each(transaction.transaction[1].players, function(tradeData){
+                      if(tradeData.player && tradeData.player[0]) {
+                        console.log(tradeData.player[0][0].player_key);
+                      }
+                      // console.log(tradeData);
+                    });
+
+                      // _.each(transaction.transaction[1].players, function(tradeData){
+                      //   console.log(tradeData.player[1].transaction_data[0].source_team_name);
+                      // });
+                    }
+                  });
+                  return;
+                });
               }
               return;
             };
