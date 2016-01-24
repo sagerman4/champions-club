@@ -57,26 +57,44 @@ angular.module('app.bestdraft').controller('BestDraftController', ['$scope', '$s
               if($scope.week!==16){
                 PlayersService.getWeeklyStats($scope.league.league_key, weeks[$scope.week].keys, $scope.week+1).then(callback);
               }
-              if($scope.week===1){
+              if($scope.week===16){
                 LeagueService.getTransactions($scope.league.league_key).then(function(results){
+                  var trades = [];
+
                   _.each(results.transactions, function(transaction){
                     if(transaction.transaction && transaction.transaction[0] && transaction.transaction[0].type==='trade') {
 
-                    console.log(transaction.transaction[0].trader_team_name + ' trading to ' + transaction.transaction[0].tradee_team_name);
-
+                    var transactionPlayers = [];
                     _.each(transaction.transaction[1].players, function(tradeData){
                       if(tradeData.player && tradeData.player[0]) {
-                        console.log(tradeData.player[0][0].player_key);
+                        var playerData = tradeData.player[1].transaction_data[0];
+                        playerData.player_key = tradeData.player[0][0].player_key;
+                        transactionPlayers.push(playerData);
                       }
-                      // console.log(tradeData);
                     });
 
-                      // _.each(transaction.transaction[1].players, function(tradeData){
-                      //   console.log(tradeData.player[1].transaction_data[0].source_team_name);
-                      // });
+                    var transactionObject = {};
+                    transactionObject.players = transactionPlayers;
+
+                    trades.push(transactionObject);
                     }
                   });
-                  return;
+
+
+                  var draftedPlayerTrades = [];
+                  _.each($scope.keys, function(key){
+                    _.each(trades, function(trade){
+                      _.each(trade.players, function(player){
+                        if(player.player_key===key){
+                          draftedPlayerTrades.push({key: key, trade: trade});
+                        }
+                      });
+                    });
+                  });
+
+                  _.each(weeks, function(week){
+
+                  });
                 });
               }
               return;
@@ -105,3 +123,50 @@ angular.module('app.bestdraft').controller('BestDraftController', ['$scope', '$s
 
 
 }]);
+
+
+
+
+
+// Transaction
+// "player": [
+//                 [
+//                   {
+//                     "player_key": "348.p.8907"
+//                   },
+//                   {
+//                     "player_id": "8907"
+//                   },
+//                   {
+//                     "name": {
+//                       "full": "Gary Barnidge",
+//                       "first": "Gary",
+//                       "last": "Barnidge",
+//                       "ascii_first": "Gary",
+//                       "ascii_last": "Barnidge"
+//                     }
+//                   },
+//                   {
+//                     "editorial_team_abbr": "Cle"
+//                   },
+//                   {
+//                     "display_position": "TE"
+//                   },
+//                   {
+//                     "position_type": "O"
+//                   }
+//                 ],
+//                 {
+//                   "transaction_data": [
+//                     {
+//                       "type": "trade",
+//                       "source_type": "team",
+//                       "source_team_key": "348.l.47496.t.1",
+//                       "source_team_name": "The REPEAT Offenders",
+//                       "destination_type": "team",
+//                       "destination_team_key": "348.l.47496.t.8",
+//                       "destination_team_name": "Charles in Charge"
+//                     }
+//                   ]
+//                 }
+//               ]
