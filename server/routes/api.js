@@ -87,6 +87,22 @@ module.exports = {
             
         }
     },
+    'leagues/:id/teams/:teamId/roster/players': {
+        get: function(req, res) {
+            FantasySports
+                .request(req, res)
+                .api('http://fantasysports.yahooapis.com/fantasy/v2/team/' + req.params.teamId + '/roster;week=1/players?format=json')
+                .done(function(data) {
+                    console.log('data', data);
+
+                    res.json(data);
+                }, function(err) {
+                    res.send(err);
+                });
+
+            
+        }
+    },
     'leagues/:id/setup': { 
         get: function(req, res) {
             FantasySports

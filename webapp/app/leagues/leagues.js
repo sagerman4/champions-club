@@ -13,4 +13,16 @@ angular.module('anal.leagues').service('LeaguesService', function ($http) {
             return response.data[0];
         });
     };
+
+    this.getTeams = function(leagueId) {
+        return $http.get('api/leagues/' + leagueId + '/teams').then(function success(response) {
+            return response.data;
+        });  
+    };
+
+    this.getTeamRoster = function(leagueId, teamId) {
+        return $http.get('api/leagues/' + leagueId + '/teams/' + teamId + '/roster/players').then(function success(response) {
+            return response.data;
+        });  
+    };
 });
