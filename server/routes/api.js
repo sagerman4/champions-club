@@ -162,6 +162,17 @@ module.exports = {
                 });
         }
     },
+    'leagues/:id/draftResults': {
+        get: function(req, res) {
+          FantasySports.request(req, res)
+             .api('http://fantasysports.yahooapis.com/fantasy/v2/league/' + req.params.id + '/draftresults?format=json')
+             .done(function(data) {
+                res.json(data);
+            }, function(err) {
+                res.send(err);
+            });
+         }
+    },
     'teams/:id': {
         get: function(req, res) {
             FantasySports

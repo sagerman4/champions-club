@@ -25,4 +25,10 @@ angular.module('anal.leagues').service('LeaguesService', function ($http) {
             return response.data;
         });  
     };
+
+    this.getDraftResults = function (id) {
+        return $http.get("api/leagues/" + id + "/draftResults").then(function success(response) {
+            return response.data;
+        });
+    };
 });
