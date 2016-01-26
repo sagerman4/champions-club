@@ -91,7 +91,7 @@ module.exports = {
         get: function(req, res) {
             FantasySports
                 .request(req, res)
-                .api('http://fantasysports.yahooapis.com/fantasy/v2/team/' + req.params.teamId + '/roster;week=' + req.params.weekNumber + '/players?format=json')
+                .api('http://fantasysports.yahooapis.com/fantasy/v2/team/' + req.params.teamId + '/roster;week=' + req.params.weekNumber + '/players/stats?format=json')
                 .done(function(data) {
 
                     var playerObjects = data.fantasy_content.team[1].roster[0].players;
@@ -109,10 +109,10 @@ module.exports = {
                                 } 
                             });
 
-                            if (value.player[1] && value.player[1].player_stats) {
-                                player.points = value.player[1].player_points.total;
+                            if (value.player[3] && value.player[3].player_stats) {
+                                player.points = value.player[3].player_points.total;
                             }
-
+                            
                             players.push(player);
                         }
 
