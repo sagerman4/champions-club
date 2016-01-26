@@ -87,11 +87,11 @@ module.exports = {
             
         }
     },
-    'leagues/:id/teams/:teamId/roster/players': {
+    'leagues/:id/teams/:teamId/roster/players/week/:weekNumber': {
         get: function(req, res) {
             FantasySports
                 .request(req, res)
-                .api('http://fantasysports.yahooapis.com/fantasy/v2/team/' + req.params.teamId + '/roster;week=1/players?format=json')
+                .api('http://fantasysports.yahooapis.com/fantasy/v2/team/' + req.params.teamId + '/roster;week=' + req.params.weekNumber + '/players?format=json')
                 .done(function(data) {
                     console.log('data', data);
 

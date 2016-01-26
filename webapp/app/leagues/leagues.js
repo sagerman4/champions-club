@@ -20,8 +20,8 @@ angular.module('anal.leagues').service('LeaguesService', function ($http) {
         });  
     };
 
-    this.getTeamRoster = function(leagueId, teamId) {
-        return $http.get('api/leagues/' + leagueId + '/teams/' + teamId + '/roster/players').then(function success(response) {
+    this.getTeamRoster = function(leagueId, teamId, week) {
+        return $http.get('api/leagues/' + leagueId + '/teams/' + teamId + '/roster/players/week/'+week).then(function success(response) {
             return response.data;
         });  
     };

@@ -32,7 +32,7 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
                         });
                     });
 
-                    LeaguesService.getTeamRoster($scope.league.league_key, $scope.teams[0].team_key).then(function(data){
+                    LeaguesService.getTeamRoster($scope.league.league_key, $scope.teams[0].team_key, 1).then(function(data){
                         console.log('roster', data);
                     });
                 });
