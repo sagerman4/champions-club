@@ -32,9 +32,25 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
                         });
                     });
 
-                    LeaguesService.getTeamRoster($scope.league.league_key, $scope.teams[0].team_key, 1).then(function(data){
-                        console.log('roster', data);
-                    });
+                    var currentTeam = 0;
+                    var currentWeek = 1;
+
+                    var callback = function(data){
+                        $scope.teams[currentTeam].weeks[currentWeek].players = data;
+
+                        currentWeek++;
+                        if(currentWeek===17) {
+                            if(currentTeam===$scope.teams.length-1) {
+                                console.log('finished', $scope.teams);
+                                return;
+                            }
+                            currentWeek=1;
+                            currentTeam++;
+                        }
+                        LeaguesService.getTeamRoster($scope.league.league_key, $scope.teams[currentTeam].team_key, currentWeek).then(callback);
+                    };
+
+                    LeaguesService.getTeamRoster($scope.league.league_key, $scope.teams[currentTeam].team_key, currentWeek).then(callback);
                 });
             });
         };

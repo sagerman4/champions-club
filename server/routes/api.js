@@ -93,9 +93,32 @@ module.exports = {
                 .request(req, res)
                 .api('http://fantasysports.yahooapis.com/fantasy/v2/team/' + req.params.teamId + '/roster;week=' + req.params.weekNumber + '/players?format=json')
                 .done(function(data) {
-                    console.log('data', data);
 
-                    res.json(data);
+                    var playerObjects = data.fantasy_content.team[1].roster[0].players;
+                    var players = [];
+
+                    _.each(playerObjects, function(value) {
+                        if (value.player) {
+                            player = {};
+                            
+                            _.each(value.player[0], function(kvp) {
+                                if (kvp === Object(kvp)) {
+                                    _.each(kvp, function(val, key) {
+                                        player[key] = val;
+                                    });
+                                } 
+                            });
+
+                            if (value.player[1] && value.player[1].player_stats) {
+                                player.points = value.player[1].player_points.total;
+                            }
+
+                            players.push(player);
+                        }
+
+                    });
+
+                    res.json(players);
                 }, function(err) {
                     res.send(err);
                 });
