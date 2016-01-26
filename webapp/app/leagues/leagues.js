@@ -1,0 +1,16 @@
+angular.module('anal.leagues', ['ui.router', 'ui.bootstrap']);
+
+angular.module('anal.leagues').service('LeaguesService', function ($http) {
+    this.getLeagues = function () {
+        return $http.get("api/leagues").then(function success(response) {
+            return response.data;
+        });
+    };
+    
+    // What type of league data are we expecting here? Does yahoo have it?
+    this.getLeague = function (id) {
+        return $http.get("api/leagues/" + id).then(function success(response) {
+            return response.data[0];
+        });
+    };
+});
