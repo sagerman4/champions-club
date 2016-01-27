@@ -31,9 +31,6 @@
             <th>
                 Draft
             </th>
-            <th>
-                Actual
-            </th>
             <th>   </th>
             </thead>
             <tr data-ng-repeat="total in teamDraftedPlayersSeasonTotal">
@@ -49,10 +46,8 @@
                 <td>
                     {{total.totalPoints}}
                 </td>
-                <td>
-                    {{total.actualTotalPoints}}
-                </td>
             </tr>
         </table>
+        <small>* These rankings include all players, bench included.  Comparing to the season total actual points is not really relevant.</small>
     </div>
 </div>
