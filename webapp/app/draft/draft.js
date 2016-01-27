@@ -1,7 +1,7 @@
 angular.module('anal.draft', ['ui.router', 'ui.bootstrap', 'anal.leagues'])
         .config(['$stateProvider',
             function ($stateProvider) {
-                $stateProvider.state('draft', {url: '/draft', templateUrl: 'draft.html'});
+                $stateProvider.state('postseason', {url: '/postseason', templateUrl: 'draft.html'});
             }
         ]);
 

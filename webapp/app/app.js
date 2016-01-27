@@ -1,9 +1,9 @@
 var anal = angular.module('anal', ['ui.router', 'ui.bootstrap', 'anal.leagues', 'anal.draft', 'ngGrid', 'ngGridPlugins']);
 
 anal.config(['$urlRouterProvider', '$stateProvider', function($urlRouterProvider, $stateProvider) {
-    $urlRouterProvider.otherwise("/draft");
+    $urlRouterProvider.otherwise("/welcome");
     $stateProvider
-          .state('drafts', {url: "/drafts", templateUrl: "drafts.html"});
+          .state('welcome', {url: "/welcome", templateUrl: "welcome.html"});
   }]);
 
 anal.controller('NavController', ['$scope', '$state', function($scope, $state) {

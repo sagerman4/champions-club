@@ -25,7 +25,12 @@
     <div class="navbar navbar-inverse navbar-fixed-top" data-ng-controller="NavController" data-ng-init="init()">
       <div class="navbar-inner">
 
-        <a data-ui-sref="dashboard.overview" class="brand" style="font-weight: bold; color: white">&nbsp; Analizer</a>
+        <a data-ui-sref="welcome" class="brand" style="font-weight: bold; color: white">&nbsp; Thing</a>
+        <ul class="nav">
+          <li class="dropdown" data-ng-class="{active: $state.includes('postseason')}">
+            <a class="dropdown-toggle" data-toggle="dropdown" data-ui-sref="postseason">Post Season</a>
+          </li>
+        </ul>
       </div>
     </div>
 
