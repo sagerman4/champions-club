@@ -15,4 +15,44 @@
             </tr>
         </table>
     </div>
+    <div data-ng-hide="!league">
+        <h3>Rankings - Total Points from Drafted Players for the Season</h3>
+        <table class="table row-hover" style="width: 400px;">
+            <thead>
+            <th>
+
+            </th>
+            <th>
+                Team
+            </th>
+            <th>
+                Manager
+            </th>
+            <th>
+                Draft
+            </th>
+            <th>
+                Actual
+            </th>
+            <th>   </th>
+            </thead>
+            <tr data-ng-repeat="total in teamDraftedPlayersSeasonTotal">
+                <td>
+                    <img src="{{total.logo_url}}">
+                </td>
+                <td>
+                    {{total.name}}
+                </td>
+                <td>
+                    {{total.manager}}
+                </td>
+                <td>
+                    {{total.totalPoints}}
+                </td>
+                <td>
+                    {{total.actualTotalPoints}}
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>

@@ -31,4 +31,40 @@ angular.module('anal.leagues').service('LeaguesService', function ($http) {
             return response.data;
         });
     };
+
+    this.getPlayerSeasonTotalPoints = function (leagueId, playerKeys) {
+        var keysString = '?';
+
+        if(playerKeys.length>25) {
+            console.log('WARNING: only 25 player keys will be used.  Yahoo! API only returns 25 results.');
+        }
+
+        var i=0;
+        _.every(playerKeys, function(key){
+            if(i>0){
+                keysString+='&';
+            }
+            keysString += 'key=' + key;
+            
+            i++;
+
+            return i<25;
+        });
+
+
+        return $http.get('api/leagues/' + leagueId + '/players/stats/season/total' + keysString)
+            .then(
+                function success(response) {
+                    return response.data;
+                }
+            );
+    };
+
+
+    
+    this.getPlayer = function (id) {
+        return $http.get("api/players/" + id).then(function success(response) {
+            return response.data[0];
+        });
+    };
 });
