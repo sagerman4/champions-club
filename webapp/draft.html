@@ -1,6 +1,9 @@
 <div data-ng-controller="DraftController" data-ng-init="init()" style="">
     <div style='text-align:center'>
-        <h2>Post Season Reports</h2>
+        <div class="pull-left">
+            <select ng-options="league as league.name for league in leagues" ng-model="league" ng-change="switchLeague(league)"></select>
+        </div>
+        <h2 style="margin-right:220px;">Post Season Reports</h2>
     </div>
     <div class='centered' data-ng-show="!teamDraftedPlayersSeasonTotal">
         <img src="http://www.fordparts.com/Images/Misc/spinner_white.gif">

@@ -5,10 +5,11 @@ angular.module('anal.chooseLeague', ['ui.router', 'ui.bootstrap', 'anal.leagues'
             }
         ]);
 
-angular.module('anal.chooseLeague').controller('LeagueChoosinController', ['$scope', '$state', '$stateParams', 'LeaguesService', function ($scope, $state, $stateParams, LeaguesService) {
+angular.module('anal.chooseLeague').controller('LeagueChoosinController', ['$scope', '$state', '$stateParams', 'LeaguesService', 'LeaguesModel', function ($scope, $state, $stateParams, LeaguesService, LeaguesModel) {
     $scope.init = function () {
         LeaguesService.getLeagues().then(function (data) {
             $scope.leagues = data;
+            LeaguesModel.setLeagues($scope.leagues);
         });
     };
 }]);

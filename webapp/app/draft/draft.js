@@ -5,13 +5,37 @@ angular.module('anal.draft', ['ui.router', 'ui.bootstrap', 'anal.leagues'])
             }
         ]);
 
-angular.module('anal.draft').controller('DraftController', ['$scope', '$state', '$stateParams', 'LeaguesService', function ($scope, $state, $stateParams, LeaguesService, ngGridPlugins) {
+angular.module('anal.draft').controller('DraftController', ['$scope', '$state', '$stateParams', 'LeaguesService', 'LeaguesModel', function ($scope, $state, $stateParams, LeaguesService, LeaguesModel, ngGridPlugins) {
         
         $scope.init = function () {
-            $scope.league = $stateParams.leagueId;
-            LeaguesService.getTeams($scope.league).then(function(data){
+            if(!LeaguesModel.getLeagues()){
+                LeaguesService.getLeagues().then(function(data){
+                    LeaguesModel.setLeagues(data);
+                    $scope.initiateLeagues();
+                });
+            } else {
+                $scope.initiateLeagues();    
+            }
+        };
+
+        $scope.initiateLeagues = function() {
+            $scope.leagues = LeaguesModel.getLeagues();
+            _.each(LeaguesModel.getLeagues(), function(league){
+                if(league.league_key===$stateParams.leagueId){
+                    $scope.league = league;
+                }
+            });
+            $scope.setItUpYo();
+        };
+
+        $scope.switchLeague = function(league){
+            $state.go('postseason', {leagueId: league.league_key});
+        }
+
+        $scope.setItUpYo = function() {
+            LeaguesService.getTeams($scope.league.league_key).then(function(data){
                 $scope.teams = data;
-                LeaguesService.getDraftResults($scope.league).then(function(data){
+                LeaguesService.getDraftResults($scope.league.league_key).then(function(data){
                     $scope.draftResults = data.fantasy_content.league[1].draft_results;
 
                     $scope.getTotalPointsScoredByEachTeamsDraft();
@@ -46,10 +70,10 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
                     //         currentWeek=1;
                     //         currentTeam++;
                     //     }
-                    //     LeaguesService.getTeamRoster($scope.league, $scope.teams[currentTeam].team_key, currentWeek).then(callback);
+                    //     LeaguesService.getTeamRoster($scope.league.league_key, $scope.teams[currentTeam].team_key, currentWeek).then(callback);
                     // };
 
-                    // LeaguesService.getTeamRoster($scope.league, $scope.teams[currentTeam].team_key, currentWeek).then(callback);
+                    // LeaguesService.getTeamRoster($scope.league.league_key, $scope.teams[currentTeam].team_key, currentWeek).then(callback);
                 });
             });
         };
@@ -81,10 +105,10 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
                 if(end>playerKeys.length){
                     end = playerKeys.length;
                 }
-                LeaguesService.getPlayerSeasonTotalPoints($scope.league, playerKeys.slice(start, end)).then(callback);
+                LeaguesService.getPlayerSeasonTotalPoints($scope.league.league_key, playerKeys.slice(start, end)).then(callback);
             };
 
-            LeaguesService.getPlayerSeasonTotalPoints($scope.league, playerKeys.slice(start, end)).then(callback);
+            LeaguesService.getPlayerSeasonTotalPoints($scope.league.league_key, playerKeys.slice(start, end)).then(callback);
         };
 
         $scope.organizeTotalsIntoTeams = function() {

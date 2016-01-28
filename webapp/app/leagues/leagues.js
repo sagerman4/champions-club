@@ -1,5 +1,14 @@
 angular.module('anal.leagues', ['ui.router', 'ui.bootstrap']);
 
+angular.module('anal.leagues').service('LeaguesModel', function() {
+  this.setLeagues = function(leagues) {
+    this.leagues = leagues;
+  };
+  this.getLeagues = function(){
+    return this.leagues;
+  }
+});
+
 angular.module('anal.leagues').service('LeaguesService', function ($http) {
     this.getLeagues = function () {
         return $http.get("api/leagues").then(function success(response) {
