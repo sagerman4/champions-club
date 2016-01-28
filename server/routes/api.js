@@ -124,9 +124,7 @@ module.exports = {
                             _.each(value.player[0], function(kvp) {
                                 if (kvp === Object(kvp)) {
                                     _.each(kvp, function(val, key) {
-                                        if(key==='player_key'){
-                                            player.player_key = val;
-                                        }
+                                        player[key] = val;
                                     });
                                 } 
                             });
