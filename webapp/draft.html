@@ -15,7 +15,10 @@
             </tr>
         </table>
     </div>
-    <div data-ng-hide="!league">
+    <div class='centered' data-ng-show="league && !teamDraftedPlayersSeasonTotal">
+        <img src="http://www.fordparts.com/Images/Misc/spinner_white.gif">
+    </div>
+    <div data-ng-hide="!teamDraftedPlayersSeasonTotal">
         <h3>Rankings - Total Points from Drafted Players for the Season</h3>
         <table class="table row-hover" style="width: 400px;">
             <thead>
