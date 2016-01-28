@@ -1,7 +1,7 @@
-var anal = angular.module('anal', ['ui.router', 'ui.bootstrap', 'anal.leagues', 'anal.draft', 'ngGrid', 'ngGridPlugins']);
+var anal = angular.module('anal', ['ui.router', 'ui.bootstrap', 'anal.leagues', 'anal.chooseLeague', 'anal.draft', 'ngGrid', 'ngGridPlugins']);
 
 anal.config(['$urlRouterProvider', '$stateProvider', function($urlRouterProvider, $stateProvider) {
-    $urlRouterProvider.otherwise("/welcome");
+    $urlRouterProvider.otherwise("/chooseLeague");
     $stateProvider
           .state('welcome', {url: "/welcome", templateUrl: "welcome.html"});
   }]);

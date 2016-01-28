@@ -1,56 +1,48 @@
 <div data-ng-controller="DraftController" data-ng-init="init()" style="">
-    <div data-ng-hide="league">
-        <h3>Choose your league:</h3>
-        <table class="table row-hover" style="width: 400px;">
-            <thead>
-            <th>
-                Name
-            </th>
-            <th>   </th>
-            </thead>
-            <tr data-ng-repeat="league in leagues">
-                <td data-ng-click="selectLeague(league)">
-                    {{league.name}}
-                </td>
-            </tr>
-        </table>
+    <div style='text-align:center'>
+        <h2>Post Season Reports</h2>
     </div>
-    <div class='centered' data-ng-show="league && !teamDraftedPlayersSeasonTotal">
+    <div class='centered' data-ng-show="!teamDraftedPlayersSeasonTotal">
         <img src="http://www.fordparts.com/Images/Misc/spinner_white.gif">
     </div>
-    <div data-ng-hide="!teamDraftedPlayersSeasonTotal">
-        <h3>Rankings - Total Points from Drafted Players for the Season</h3>
-        <table class="table row-hover" style="width: 400px;">
-            <thead>
-            <th>
 
-            </th>
-            <th>
-                Team
-            </th>
-            <th>
-                Manager
-            </th>
-            <th>
-                Draft
-            </th>
-            <th>   </th>
-            </thead>
-            <tr data-ng-repeat="total in teamDraftedPlayersSeasonTotal">
-                <td>
-                    <img src="{{total.logo_url}}">
-                </td>
-                <td>
-                    {{total.name}}
-                </td>
-                <td>
-                    {{total.manager}}
-                </td>
-                <td>
-                    {{total.totalPoints}}
-                </td>
-            </tr>
-        </table>
-        <small>* These rankings include all players, bench included.  Comparing to the season total actual points is not really relevant.</small>
-    </div>
+    <tabset data-ng-hide="!teamDraftedPlayersSeasonTotal">
+        <tab heading="Total Pts Drafted">
+            <div data-ng-hide="!teamDraftedPlayersSeasonTotal">
+                <h3>Rankings - Total Points from Drafted Players for the Season</h3>
+                <table class="table row-hover" style="width: 400px;">
+                    <thead>
+                    <th>
+
+                    </th>
+                    <th>
+                        Team
+                    </th>
+                    <th>
+                        Manager
+                    </th>
+                    <th>
+                        Draft
+                    </th>
+                    <th>   </th>
+                    </thead>
+                    <tr data-ng-repeat="total in teamDraftedPlayersSeasonTotal">
+                        <td>
+                            <img src="{{total.logo_url}}">
+                        </td>
+                        <td>
+                            {{total.name}}
+                        </td>
+                        <td>
+                            {{total.manager}}
+                        </td>
+                        <td>
+                            {{total.totalPoints}}
+                        </td>
+                    </tr>
+                </table>
+                <small>* These rankings include all players, bench included.  Comparing to the season total actual points is not really relevant.</small>
+            </div>
+        </tab>
+    </tabset>
 </div>
