@@ -1,11 +1,11 @@
-angular.module('anal.draft', ['ui.router', 'ui.bootstrap', 'anal.leagues'])
+angular.module('anal.draft', ['ui.router', 'ui.bootstrap', 'anal.leagues', 'ngGrid', 'ngGridPlugins'])
         .config(['$stateProvider',
             function ($stateProvider) {
                 $stateProvider.state('postseason', {url: '/postseason/:leagueId', templateUrl: 'draft.html'});
             }
         ]);
 
-angular.module('anal.draft').controller('DraftController', ['$scope', '$state', '$stateParams', 'LeaguesService', 'LeaguesModel', function ($scope, $state, $stateParams, LeaguesService, LeaguesModel, ngGridPlugins) {
+angular.module('anal.draft').controller('DraftController', ['$scope', '$state', '$stateParams', 'LeaguesService', 'LeaguesModel', 'ngGridPlugins', function ($scope, $state, $stateParams, LeaguesService, LeaguesModel, ngGridPlugins) {
         
         $scope.init = function () {
             if(!LeaguesModel.getLeagues()){
@@ -126,6 +126,8 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
                         if(result.draft_result.player_key===playerTotal.player_key){
                             result.draft_result.seasonTotalPoints = playerTotal.seasonTotalPoints;
                             result.draft_result.name = playerTotal.name.full;
+                            result.draft_result.position = playerTotal.eligible_positions[0].position;
+                            result.draft_result.headshot = playerTotal.headshot.url;
                             teamTotals[result.draft_result.team_key].totalPoints+=Number(playerTotal.seasonTotalPoints);
                         }
                     });
@@ -141,15 +143,31 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
             $scope.teamDraftedPlayersSeasonTotal.reverse();
         };
 
+        $scope.ranekdDraftedPlayers = [];
+
         $scope.rankPlayers = function() {
             $scope.rankedDraftedPlayers = [];
             _.each($scope.draftResults, function(result){
                 if(result.draft_result){
-                    $scope.rankedDraftedPlayers.push({player_key: result.draft_result.player_key, seasonTotalPoints: Number(result.draft_result.seasonTotalPoints), name: result.draft_result.name});
+                    $scope.rankedDraftedPlayers.push({player_key: result.draft_result.player_key, 
+                                                      seasonTotalPoints: Number(result.draft_result.seasonTotalPoints), 
+                                                      name: result.draft_result.name,
+                                                      position: result.draft_result.position,
+                                                      cost: Number(result.draft_result.cost),
+                                                      pointsPerDollar: Number(result.draft_result.seasonTotalPoints) / Number(result.draft_result.cost),
+                                                      headshot: result.draft_result.headshot});
                 }
             }); 
 
             $scope.rankedDraftedPlayers = _.sortBy($scope.rankedDraftedPlayers, 'seasonTotalPoints');
             $scope.rankedDraftedPlayers.reverse();  
+
+            var byPosition = {};
+            _.each($scope.rankedDraftedPlayers, function(player){
+                if(!byPosition[player.position]){
+                    byPosition[player.position] = [];
+                }
+                byPosition[player.position].push(player);
+            });
         };  
     }]);

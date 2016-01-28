@@ -47,5 +47,48 @@
                 <small>* These rankings include all players, bench included.  Comparing to the season total actual points is not really relevant.</small>
             </div>
         </tab>
+        <tab heading="Player Rankings">
+            <div>
+                <h3>Rankings - Drafted Players Ranked by Points</h3>
+                <table class="table row-hover" style="width: 400px;">
+                    <thead>
+                    <th>
+
+                    </th>
+                    <th>
+                        Player
+                    </th>
+                    <th>
+                        Points
+                    </th>
+                    <th>
+                        Cost
+                    </th>
+                    <th>
+                        Points/Dollar
+                    </th>
+                    <th>   </th>
+                    </thead>
+                    <tr data-ng-repeat="player in rankedDraftedPlayers">
+                        <td>
+                            <img src="{{player.headshot}}">
+                            <p></p>
+                        </td>
+                        <td>
+                            {{player.name}}
+                        </td>
+                        <td>
+                            {{player.seasonTotalPoints}}
+                        </td>
+                        <td>
+                            {{player.cost}}
+                        </td>
+                        <td>
+                            {{player.pointsPerDollar}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </tab>
     </tabset>
 </div>
