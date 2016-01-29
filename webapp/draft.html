@@ -72,7 +72,7 @@
                     <tr data-ng-repeat="player in rankedDraftedPlayers">
                         <td>
                             <img src="{{player.headshot}}">
-                            <p></p>
+                            <p style="visibility:hidden;">{{player.headshot.length}}</p>
                         </td>
                         <td>
                             {{player.name}}
