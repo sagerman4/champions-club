@@ -15,15 +15,10 @@
     <script type="text/javascript" src="resources/angular/angular.js"></script>
     <script type="text/javascript" src="resources/ui-router/angular-ui-router.js"></script>
     <script type="text/javascript" src="resources/angular-ui/ui-bootstrap-tpls-0.8.0.min.js"></script>
-    <script type="text/javascript" src="resources/d3/d3.min.js"></script>
-    <script type="text/javascript" src="resources/angular-charts/angular-charts.min.js"></script>
     <script type="text/javascript" src="resources/ng-grid/ng-grid-2.0.13.min.js"></script>
     <script type="text/javascript" src="app/app.js"></script>
     <script type="text/javascript" src="app/leagues/leagues.js"></script>
-    <script type="text/javascript" src="app/teams/teams.js"></script>
-    <script type="text/javascript" src="app/players/players.js"></script>
-    <script type="text/javascript" src="app/drafts/drafts.js"></script>
-    <script type="text/javascript" src="app/draftPicks/draftPicks.js"></script>
+    <script type="text/javascript" src="app/chooseLeague/chooseLeague.js"></script>
     <script type="text/javascript" src="app/draft/draft.js"></script>
     <script type="text/javascript" src="resources/ng-grid/ngGridPlugins.js"></script>
   </head> 
@@ -31,7 +26,12 @@
     <div class="navbar navbar-inverse navbar-fixed-top" data-ng-controller="NavController" data-ng-init="init()">
       <div class="navbar-inner">
 
-        <a data-ui-sref="dashboard.overview" class="brand" style="font-weight: bold; color: white">&nbsp; Analizer</a>
+        <a data-ui-sref="welcome" class="brand" style="font-weight: bold; color: white">&nbsp; Thing</a>
+        <ul class="nav">
+          <li class="dropdown" data-ng-class="{active: $state.includes('postseason')}">
+            <a class="dropdown-toggle" data-toggle="dropdown" data-ui-sref="postseason">Post Season</a>
+          </li>
+        </ul>
       </div>
     </div>
 

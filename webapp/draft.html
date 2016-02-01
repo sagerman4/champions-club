@@ -1,0 +1,195 @@
+<div data-ng-controller="DraftController" data-ng-init="init()" style="">
+    <div style='text-align:center'>
+        <div class="pull-left">
+            <select ng-options="league as league.name for league in leagues" ng-model="league" ng-change="switchLeague(league)"></select>
+        </div>
+        <h2 style="margin-right:220px;">Post Season Reports</h2>
+    </div>
+    <div class='centered' data-ng-show="!teamDraftedPlayersSeasonTotal">
+        <img src="http://www.fordparts.com/Images/Misc/spinner_white.gif">
+    </div>
+
+    <tabset data-ng-hide="!teamDraftedPlayersSeasonTotal">
+        <tab heading="Total Pts Drafted">
+            <div data-ng-hide="!teamDraftedPlayersSeasonTotal">
+                <h3>Rankings - Total Points from Drafted Players for the Season</h3>
+                <table class="table row-hover" style="width: 450px;">
+                    <thead>
+                    <th>
+
+                    </th>
+                    <th>
+                        Team
+                    </th>
+                    <th>
+                        Manager
+                    </th>
+                    <th>
+                        Draft
+                    </th>
+                    <th>   </th>
+                    </thead>
+                    <tr data-ng-repeat="total in teamDraftedPlayersSeasonTotal">
+                        <td>
+                            <img src="{{total.logo_url}}">
+                        </td>
+                        <td>
+                            {{total.name}}
+                        </td>
+                        <td>
+                            {{total.manager}}
+                        </td>
+                        <td>
+                            {{total.totalPoints}}
+                        </td>
+                    </tr>
+                </table>
+                <small>* These rankings include all players, bench included.  Comparing to the season total actual points is not really relevant.</small>
+            </div>
+        </tab>
+        <tab heading="Player Points">
+            <div>
+                <h3>Rankings - Drafted Players Ranked by Points</h3>
+                <table class="table row-hover" style="width: 800px;">
+                    <thead>
+                    <th>
+
+                    </th>
+                    <th>
+                        Player
+                    </th>
+                    <th>
+                        Points
+                    </th>
+                    <th>
+                        Cost
+                    </th>
+                    <th>
+                        Points/Dollar
+                    </th>
+                    <th>
+                        Drafting Team
+                    </th>
+                    <th>   </th>
+                    </thead>
+                    <tr data-ng-repeat="player in rankedDraftedPlayers">
+                        <td>
+                            <img src="{{player.headshot}}">
+                            <p style="visibility:hidden;">{{player.headshot.length}}</p>
+                        </td>
+                        <td>
+                            {{player.name}} - {{player.position}}
+                        </td>
+                        <td>
+                            {{player.seasonTotalPoints}}
+                        </td>
+                        <td>
+                            {{player.cost}}
+                        </td>
+                        <td>
+                            {{player.pointsPerDollar}}
+                        </td>
+                        <td>
+                            {{player.teamName}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </tab>
+        <tab heading="Player Pnts/Dollar">
+            <div>
+                <h3>Rankings - Drafted Players Ranked by Points per Dollar</h3>
+                <table class="table row-hover" style="width: 800px;">
+                    <thead>
+                    <th>
+
+                    </th>
+                    <th>
+                        Player
+                    </th>
+                    <th>
+                        Points
+                    </th>
+                    <th>
+                        Cost
+                    </th>
+                    <th>
+                        Points/Dollar
+                    </th>
+                    <th>
+                        Drafting Team
+                    </th>
+                    <th>   </th>
+                    </thead>
+                    <tr data-ng-repeat="player in rankedByPointsPerDollarDraftedPlayers">
+                        <td>
+                            <img src="{{player.headshot}}">
+                            <p style="visibility:hidden;">{{player.headshot.length}}</p>
+                        </td>
+                        <td>
+                            {{player.name}} - {{player.position}}
+                        </td>
+                        <td>
+                            {{player.seasonTotalPoints}}
+                        </td>
+                        <td>
+                            {{player.cost}}
+                        </td>
+                        <td>
+                            {{player.pointsPerDollar}}
+                        </td>
+                        <td>
+                            {{player.teamName}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </tab>
+        <tab heading="Medals">
+            <div>
+                <h3>Rankings - Drafted Players Ranked by Points per Dollar</h3>
+                <div>
+                    <span>Best Value</span>
+                    <span></span>
+                </div>
+                <div>
+                    <span>Worst Waste of Money</span>
+                    <span></span>
+                </div>
+                <div>
+                    <span>Highest Scoring Draft</span>
+                    <span></span>
+                </div>
+                <div>
+                    <span>Lowest Scoring Draft</span>
+                    <span></span>
+                </div>
+                <div>
+                    <span>Best Newcomer Draftee</span>
+                    <span></span>
+                </div>
+                <div>
+                    <span>Most Consciencious</span>
+                    <span></span>
+                </div>
+                <div>
+                    <span>Big Spender</span>
+                    <span></span>
+                </div>
+                <div>
+                    <span>Slow 'n Steady</span>
+                    <span></span>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+</div>
+<!-- 
+Best Value = highest ratio of pts/dollar and lowest perc. of budget
+Worst Waste of Money = lowest ratio of pts/dollar and highest perc. of budget
+Highest Scoring Draft = most amount of points for drafted players for the season
+Lowest Scoring Draft = least " " " " " " " " "
+Best Newcomer Draftee = most points from player not drafted last year
+Most Concientious = least spent by a team
+Big Spender = spent a large amount on a few amount of players
+Slow 'n Steady = distributed budget evenly -->

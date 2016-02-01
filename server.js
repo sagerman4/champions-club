@@ -31,7 +31,7 @@ app.use(cookieSession({
 }));
 
 app.use(app.router);
-app.use(express.static('C:\\Users\\IBM_ADMIN\\Projects\\champions-club\\public\\auction'));
+app.use(express.static('C:\\Users\\IBM_ADMIN\\Projects\\champions-club\\webapp'));
 
 // development only
 if ('development' == app.get('env')) {
