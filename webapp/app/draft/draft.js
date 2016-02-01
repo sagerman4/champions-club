@@ -23,6 +23,9 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
             _.each(LeaguesModel.getLeagues(), function(league){
                 if(league.league_key===$stateParams.leagueId){
                     $scope.league = league;
+                    LeaguesService.getLeagueSettings($scope.league.league_key).then(function(data){
+                        $scope.leagueSettings = data;
+                    });
                 }
             });
             $scope.setItUpYo();
@@ -117,7 +120,7 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
             var teamTotals = {};
             var total;
             _.each($scope.teams, function(team){
-                teamTotals[team.team_key] = {totalPoints: 0, name: team.name, logo_url: team.team_logos[0].team_logo.url, manager: team.managers[0].nickname, actualTotalPoints: team.seasonTotalPoints};
+                teamTotals[team.team_key] = {totalPoints: 0, name: team.name, logo_url: team.team_logos[0].team_logo.url, manager: team.managers[0].manager.nickname, actualTotalPoints: team.seasonTotalPoints};
             });
 
             _.each($scope.draftResults, function(result){
@@ -128,6 +131,8 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
                             result.draft_result.name = playerTotal.name.full;
                             result.draft_result.position = playerTotal.eligible_positions[0].position;
                             result.draft_result.headshot = playerTotal.headshot.url;
+                            result.draft_result.team_name = teamTotals[result.draft_result.team_key].name;
+                            result.draft_result.manager = teamTotals[result.draft_result.team_key].manager;
                             teamTotals[result.draft_result.team_key].totalPoints+=Number(playerTotal.seasonTotalPoints);
                         }
                     });
@@ -155,19 +160,76 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
                                                       position: result.draft_result.position,
                                                       cost: Number(result.draft_result.cost),
                                                       pointsPerDollar: Number(result.draft_result.seasonTotalPoints) / Number(result.draft_result.cost),
-                                                      headshot: result.draft_result.headshot});
+                                                      headshot: result.draft_result.headshot,
+                                                      teamName: result.draft_result.team_name,
+                                                      manager: result.draft_result.manager,
+                                                      team_key: result.draft_result.team_key});
                 }
             }); 
+
+            $scope.rankedByPointsPerDollarDraftedPlayers = _.sortBy($scope.rankedDraftedPlayers, 'pointsPerDollar');
+            $scope.rankedByPointsPerDollarDraftedPlayers.reverse();              
 
             $scope.rankedDraftedPlayers = _.sortBy($scope.rankedDraftedPlayers, 'seasonTotalPoints');
             $scope.rankedDraftedPlayers.reverse();  
 
-            var byPosition = {};
+            var rank = 1;
             _.each($scope.rankedDraftedPlayers, function(player){
-                if(!byPosition[player.position]){
-                    byPosition[player.position] = [];
-                }
-                byPosition[player.position].push(player);
+                player.rank = rank++;
             });
+
+            $scope.byPosition = {};
+            var rank = 1;
+            _.each($scope.rankedDraftedPlayers, function(player){
+                if(!$scope.byPosition[player.position]){
+                    $scope.byPosition[player.position] = [];
+                }
+
+                $scope.byPosition[player.position].push(
+                    { 
+                      player_key: player.player_key, 
+                      seasonTotalPoints: player.seasonTotalPoints, 
+                      name: player.name,
+                      position: player.position,
+                      cost: player.cost,
+                      pointsPerDollar: player.pointsPerDollar,
+                      headshot: player.headshot,
+                      teamName: player.teamName,
+                      manager: player.manager,
+                      rank: $scope.byPosition[player.position].length,
+                      team_key: player.team_key
+                    }
+                );
+            });
+            $scope.determineRosters();
         };  
+
+        $scope.determineRosters = function(){
+            var teamRosters = {};
+            _.each($scope.teams, function(team){
+                teamRosters[team.team_key] = {
+                    name: team.name, 
+                    logo_url: team.team_logos[0].team_logo.url, 
+                    manager: team.managers[0].manager.nickname,
+                    roster: {}
+                };
+
+                _.each($scope.leagueSettings.roster_positions, function(rosterPosition){
+                    var position = rosterPosition.roster_position.position;
+                    var bestAtPosition;
+                    _.each($scope.byPosition[position], function(player){
+                        console.log(player.team_key + '?=' + team.team_key);
+                        console.log('!bestAtPosition=' + !bestAtPosition);
+                        console.log('!player.taken', !player.taken);
+                        if(player.team_key===team.team_key && !bestAtPosition && !player.taken){
+                            bestAtPosition = player;
+                            player.taken=true;
+                        }
+                    });
+
+                    teamRosters[team.team_key].roster[position] = bestAtPosition;
+                });
+            });
+            console.log('teamRosters', teamRosters);
+        };
     }]);

@@ -41,6 +41,12 @@ angular.module('anal.leagues').service('LeaguesService', function ($http) {
         });
     };
 
+    this.getLeagueSettings = function (id) {
+        return $http.get("api/leagues/" + id + "/settings").then(function success(response) {
+            return response.data;
+        });
+    };
+
     this.getPlayerSeasonTotalPoints = function (leagueId, playerKeys) {
         var keysString = '?';
 
