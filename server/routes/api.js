@@ -42,6 +42,16 @@ module.exports = {
                 });
         }
     },
+    'seasonKeys': {
+        get: function(req, res) {
+             FantasySports
+                .request(req, res)
+                .api('http://fantasysports.yahooapis.com/fantasy/v2/game/nfl?format=json')
+                .done(function(data) {
+                    res.json(data);
+                });
+        }
+    },
     'leagues/:id/players': {
         get: function(req, res) {
             var keys = _.map(req.query, function(val, key) {
@@ -217,6 +227,32 @@ module.exports = {
 
                     _.each(leagueData, function(value) {
                         if (value.league) leagues.push(value.league[0]);
+                    });
+
+                    res.json(leagues);
+                });
+        }
+    },
+    'leagues/all': {
+        get: function(req, res) {
+            var keys = _.map(req.query, function(val, key) {
+                return val;
+            }).join();  
+
+            console.log('url', 'http://fantasysports.yahooapis.com/fantasy/v2/users;use_login=1/games;game_keys=' + keys + '/leagues?format=json');
+
+            FantasySports
+                .request(req, res)
+                .api('http://fantasysports.yahooapis.com/fantasy/v2/users;use_login=1/games;game_keys=' + keys + '/leagues?format=json')
+                .done(function(data) {
+                    var leagues = [];
+
+                    _.each(data.fantasy_content.users[0].user[1].games, function(game){
+                        if(game.game){
+                            _.each(game.game[1].leagues, function(value) {
+                                if (value.league) leagues.push(value.league[0]);
+                            });    
+                        }
                     });
 
                     res.json(leagues);

@@ -6,12 +6,33 @@ angular.module('anal.leagues').service('LeaguesModel', function() {
   };
   this.getLeagues = function(){
     return this.leagues;
-  }
+  };
+  this.setAllLeagues = function(allLeagues) {
+    this.allLeagues = allLeagues;
+  };
+  this.getAllLeagues = function(){
+    return this.allLeagues;
+  };
 });
 
 angular.module('anal.leagues').service('LeaguesService', function ($http) {
+    
     this.getLeagues = function () {
         return $http.get("api/leagues").then(function success(response) {
+            return response.data;
+        });
+    };
+
+    this.getAllLeagues = function () {
+        var gameKeyString = "?";
+        _.each(this.gameKeys, function(key){
+            if(gameKeyString.length>1){
+                gameKeyString+="&";
+            }
+            gameKeyString+="gameKey=";
+            gameKeyString+=key.gameKey;
+        });
+        return $http.get("api/leagues/all" + gameKeyString).then(function success(response) {
             return response.data;
         });
     };
@@ -82,4 +103,17 @@ angular.module('anal.leagues').service('LeaguesService', function ($http) {
             return response.data[0];
         });
     };
+
+    this.getSeasons = function() {
+        return this.gameKeys;
+    };
+
+    this.gameKeys = [
+                {gameKey: "348", year: "2015"},
+                {gameKey: "331", year: "2014"},
+                {gameKey: "314", year: "2013"},
+                {gameKey: "273", year: "2012"},
+                {gameKey: "257", year: "2011"},
+                {gameKey: "242", year: "2010"} 
+                ];
 });

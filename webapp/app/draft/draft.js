@@ -7,10 +7,12 @@ angular.module('anal.draft', ['ui.router', 'ui.bootstrap', 'anal.leagues', 'ngGr
 
 angular.module('anal.draft').controller('DraftController', ['$scope', '$state', '$stateParams', 'LeaguesService', 'LeaguesModel', 'ngGridPlugins', function ($scope, $state, $stateParams, LeaguesService, LeaguesModel, ngGridPlugins) {
         
+        $scope.seasons = [];
+
         $scope.init = function () {
-            if(!LeaguesModel.getLeagues()){
-                LeaguesService.getLeagues().then(function(data){
-                    LeaguesModel.setLeagues(data);
+            if(!LeaguesModel.getAllLeagues()){
+                LeaguesService.getAllLeagues().then(function(data){
+                    LeaguesModel.setAllLeagues(data);
                     $scope.initiateLeagues();
                 });
             } else {
@@ -19,26 +21,50 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
         };
 
         $scope.initiateLeagues = function() {
-            $scope.leagues = LeaguesModel.getLeagues();
-            _.each(LeaguesModel.getLeagues(), function(league){
+            $scope.allLeagues = LeaguesModel.getAllLeagues();
+            _.each($scope.allLeagues, function(league){
                 if(league.league_key===$stateParams.leagueId){
-                    $scope.league = league;
-                    LeaguesService.getLeagueSettings($scope.league.league_key).then(function(data){
+                    $scope.season = league;
+                    LeaguesService.getLeagueSettings(league.league_key).then(function(data){
                         $scope.leagueSettings = data;
                     });
                 }
             });
-            $scope.setItUpYo();
+            _.each($scope.allLeagues, function(league){
+                if(league.name===$scope.season.name){
+                    $scope.seasons.push(league);
+                }
+            });
+            if(!LeaguesModel.getLeagues()){
+                LeaguesService.getLeagues().then(function(data){
+                    LeaguesModel.setLeagues(data);
+                    $scope.leagues = data;
+                    _.each($scope.leagues, function(league){
+                        if(league.league_key===$stateParams.leagueId){
+                            $scope.league = league;
+                        }
+                    });
+                    $scope.setItUpYo();
+                });
+            } else {
+                $scope.setItUpYo();
+            }
         };
 
         $scope.switchLeague = function(league){
+            console.log('league', league);
             $state.go('postseason', {leagueId: league.league_key});
-        }
+        };
+
+        $scope.switchSeasons = function(season){
+            console.log('ugggghhhhhhhhhhhhhh');
+            $state.go('postseason', {leagueId: season.league_key});
+        };
 
         $scope.setItUpYo = function() {
-            LeaguesService.getTeams($scope.league.league_key).then(function(data){
+            LeaguesService.getTeams($scope.season.league_key).then(function(data){
                 $scope.teams = data;
-                LeaguesService.getDraftResults($scope.league.league_key).then(function(data){
+                LeaguesService.getDraftResults($scope.season.league_key).then(function(data){
                     $scope.draftResults = data.fantasy_content.league[1].draft_results;
 
                     $scope.getTotalPointsScoredByEachTeamsDraft();
@@ -73,10 +99,10 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
                     //         currentWeek=1;
                     //         currentTeam++;
                     //     }
-                    //     LeaguesService.getTeamRoster($scope.league.league_key, $scope.teams[currentTeam].team_key, currentWeek).then(callback);
+                    //     LeaguesService.getTeamRoster($scope.season.league_key, $scope.teams[currentTeam].team_key, currentWeek).then(callback);
                     // };
 
-                    // LeaguesService.getTeamRoster($scope.league.league_key, $scope.teams[currentTeam].team_key, currentWeek).then(callback);
+                    // LeaguesService.getTeamRoster($scope.season.league_key, $scope.teams[currentTeam].team_key, currentWeek).then(callback);
                 });
             });
         };
@@ -109,10 +135,10 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
                 if(end>playerKeys.length){
                     end = playerKeys.length;
                 }
-                LeaguesService.getPlayerSeasonTotalPoints($scope.league.league_key, playerKeys.slice(start, end)).then(callback);
+                LeaguesService.getPlayerSeasonTotalPoints($scope.season.league_key, playerKeys.slice(start, end)).then(callback);
             };
 
-            LeaguesService.getPlayerSeasonTotalPoints($scope.league.league_key, playerKeys.slice(start, end)).then(callback);
+            LeaguesService.getPlayerSeasonTotalPoints($scope.season.league_key, playerKeys.slice(start, end)).then(callback);
         };
 
         $scope.organizeTotalsIntoTeams = function() {
@@ -218,9 +244,6 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
                     var position = rosterPosition.roster_position.position;
                     var bestAtPosition;
                     _.each($scope.byPosition[position], function(player){
-                        console.log(player.team_key + '?=' + team.team_key);
-                        console.log('!bestAtPosition=' + !bestAtPosition);
-                        console.log('!player.taken', !player.taken);
                         if(player.team_key===team.team_key && !bestAtPosition && !player.taken){
                             bestAtPosition = player;
                             player.taken=true;
@@ -230,6 +253,5 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
                     teamRosters[team.team_key].roster[position] = bestAtPosition;
                 });
             });
-            console.log('teamRosters', teamRosters);
         };
     }]);
