@@ -10,6 +10,24 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
         $scope.seasons = [];
 
         $scope.init = function () {
+            if(!LeaguesModel.getLeagues()){
+                LeaguesService.getLeagues().then(function(data){
+                    LeaguesModel.setLeagues(data);
+                    $scope.assignLeagues(LeaguesModel.getLeagues());
+                });
+            } else {
+                $scope.assignLeagues(LeaguesModel.getLeagues());
+            }
+        };
+
+        $scope.assignLeagues = function(leagues){
+            $scope.leagues = leagues;
+            _.each($scope.leagues, function(league){
+                if(league.league_key===$stateParams.leagueId){
+                    $scope.league = league;
+                }
+            });
+            
             if(!LeaguesModel.getAllLeagues()){
                 LeaguesService.getAllLeagues().then(function(data){
                     LeaguesModel.setAllLeagues(data);
@@ -35,29 +53,14 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
                     $scope.seasons.push(league);
                 }
             });
-            if(!LeaguesModel.getLeagues()){
-                LeaguesService.getLeagues().then(function(data){
-                    LeaguesModel.setLeagues(data);
-                    $scope.leagues = data;
-                    _.each($scope.leagues, function(league){
-                        if(league.league_key===$stateParams.leagueId){
-                            $scope.league = league;
-                        }
-                    });
-                    $scope.setItUpYo();
-                });
-            } else {
-                $scope.setItUpYo();
-            }
+            $scope.setItUpYo();
         };
 
         $scope.switchLeague = function(league){
-            console.log('league', league);
             $state.go('postseason', {leagueId: league.league_key});
         };
 
         $scope.switchSeasons = function(season){
-            console.log('ugggghhhhhhhhhhhhhh');
             $state.go('postseason', {leagueId: season.league_key});
         };
 

@@ -1,7 +1,7 @@
 <div data-ng-controller="DraftController" data-ng-init="init()" style="">
     <div style='text-align:center'>
         <div class="pull-left">
-            <select ng-options="league as league.league_key for league in leagues" ng-model="leagueOne" ng-change="switchLeague(league)"></select>
+            <select ng-options="league as league.name for league in leagues" ng-model="league" ng-change="switchLeague(league)"></select>
         </div>
         <div class="pull-left">
             <select ng-options="season as season.season for season in seasons" ng-model="season" ng-change="switchSeasons(season)"></select>
