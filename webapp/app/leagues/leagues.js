@@ -96,8 +96,16 @@ angular.module('anal.leagues').service('LeaguesService', function ($http) {
             );
     };
 
+    this.getPlayersSeasonTotalPoints = function (leagueId, index) {
+        return $http.get('api/leagues/' + leagueId + '/players/stats/season/totals/' + index)
+            .then(
+                function success(response) {
+                    console.log('result', response.data);
+                    return response.data;
+                }
+            );
+    };
 
-    
     this.getPlayer = function (id) {
         return $http.get("api/players/" + id).then(function success(response) {
             return response.data[0];

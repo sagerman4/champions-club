@@ -25,6 +25,7 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
             _.each($scope.leagues, function(league){
                 if(league.league_key===$stateParams.leagueId){
                     $scope.league = league;
+                    $scope.getAllDemPlayas();
                 }
             });
             
@@ -62,6 +63,21 @@ angular.module('anal.draft').controller('DraftController', ['$scope', '$state', 
 
         $scope.switchSeasons = function(season){
             $state.go('postseason', {leagueId: season.league_key});
+        };
+
+        $scope.getAllDemPlayas = function() {
+            $scope.allDemPlayas = [];
+            var index = 0;
+
+            var callback = function(data){
+                index = index + 25;
+                if(!data || (data && data.length===0)){
+                    return;
+                }
+                LeaguesService.getPlayersSeasonTotalPoints($scope.league.league_key, index).then(callback);
+            };
+
+            LeaguesService.getPlayersSeasonTotalPoints($scope.league.league_key, index).then(callback);
         };
 
         $scope.setItUpYo = function() {

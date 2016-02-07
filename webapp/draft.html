@@ -6,6 +6,9 @@
         <div class="pull-left">
             <select ng-options="season as season.season for season in seasons" ng-model="season" ng-change="switchSeasons(season)"></select>
         </div>
+        <div>
+            {{league.name}}
+        </div>
         <h2 style="margin-right:220px;">Post Season Reports</h2>
     </div>
     <div class='centered' data-ng-show="!teamDraftedPlayersSeasonTotal">

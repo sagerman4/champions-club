@@ -165,6 +165,58 @@ module.exports = {
             
         }
     },
+    'leagues/:id/players/stats/season/totals/:start': {
+        get: function(req, res) {
+
+            FantasySports
+                .request(req, res)
+                .api('http://fantasysports.yahooapis.com/fantasy/v2/league/' + req.params.id + '/players;sort=PTS;start=' + req.params.start + '/stats?format=json')
+                .done(function(data) {
+
+                    var playerData = data.fantasy_content.league[1].players,
+                        players = [],
+                        player = {},
+                        stats = {};
+
+
+
+                    _.each(playerData, function(value) {
+                        if (value.player) {
+                            player = {};
+                            _.each(value.player[0], function(kvp) {
+                                if (kvp === Object(kvp)) {
+                                    _.each(kvp, function(val, key) {
+                                        player[key] = val;
+                                    });
+                                } 
+                            });
+
+                            stats = {};
+                            _.each(value.player[1], function(kvp) {
+                                if (kvp === Object(kvp)) {
+                                    _.each(kvp, function(val, key) {
+                                        stats[key] = val;
+                                    });
+                                } 
+                            });
+
+
+                            if (value.player[1] && value.player[1].player_stats) {
+                                player.seasonTotalPoints = value.player[1].player_points.total;
+                            }
+
+                            players.push(player);
+                        }
+                    });
+
+                    res.json(players);
+                }, function(err) {
+                    res.send(err);
+                });
+
+            
+        }
+    },
     'leagues/:id/teams/:teamId/roster/players/week/:weekNumber': {
         get: function(req, res) {
             FantasySports
