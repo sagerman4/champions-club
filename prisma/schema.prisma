@@ -1,0 +1,135 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  username  String     @unique
+  email     String     @unique
+  password  String
+  userGames UserGame[]
+}
+
+model Game {
+  id         Int        @id @default(autoincrement())
+  game_key   String     @unique
+  name       String
+  type       String?
+  url        String?
+  season     Int
+  is_active  Boolean    @default(true)
+  userGames  UserGame[]
+  leagues    League[]
+  playerStats PlayerStat[]
+}
+
+model UserGame {
+  user   User   @relation(fields: [userId], references: [id])
+  userId Int
+  game   Game   @relation(fields: [gameId], references: [id])
+  gameId Int
+  @@id([userId, gameId])
+}
+
+model League {
+  id           Int           @id @default(autoincrement())
+  game         Game          @relation(fields: [gameId], references: [id])
+  gameId       Int
+  name         String
+  url          String?
+  settingsJson Json?
+  teams        Team[]
+  leaguePlayers LeaguePlayer[]
+  playerStats  PlayerStat[]
+  healthStatuses HealthStatus[]
+}
+
+model Team {
+  id        Int           @id @default(autoincrement())
+  league    League        @relation(fields: [leagueId], references: [id])
+  leagueId  Int
+  name      String
+  teamUrl   String?
+  logoUrl   String?
+  leaguePlayers LeaguePlayer[]
+}
+
+model Player {
+  id           Int             @id @default(autoincrement())
+  full_name    String
+  position     String
+  nfl_team     String?
+  dob          DateTime?
+  image_url    String?
+  leaguePlayers LeaguePlayer[]
+  healthStatuses HealthStatus[]
+  playerStats PlayerStat[]
+}
+
+model LeaguePlayer {
+  id            Int         @id @default(autoincrement())
+  league        League      @relation(fields: [leagueId], references: [id])
+  leagueId      Int
+  player        Player      @relation(fields: [playerId], references: [id])
+  playerId      Int
+  team          Team?       @relation(fields: [teamId], references: [id])
+  teamId        Int?
+  bye_week      Int?
+  positions     String?
+  season_stats  Json?
+}
+
+model HealthStatus {
+  id            Int       @id @default(autoincrement())
+  player        Player    @relation(fields: [playerId], references: [id])
+  playerId      Int
+  league        League?   @relation(fields: [leagueId], references: [id])
+  leagueId      Int?
+  status        String
+  detail        String?
+  effectiveDate DateTime
+}
+
+model StatCategory {
+  id            Int             @id @default(autoincrement())
+  name          String
+  displayName   String
+  statPositions StatPosition[]
+}
+
+model Position {
+  id            Int             @id @default(autoincrement())
+  type          String
+  statPositions StatPosition[]
+}
+
+model StatPosition {
+  stat         StatCategory @relation(fields: [statId], references: [id])
+  statId       Int
+  position     Position     @relation(fields: [positionId], references: [id])
+  positionId   Int
+  @@id([statId, positionId])
+}
+
+model PlayerStat {
+  id           Int        @id @default(autoincrement())
+  player       Player     @relation(fields: [playerId], references: [id])
+  playerId     Int
+  game         Game       @relation(fields: [gameId], references: [id])
+  gameId       Int
+  league       League     @relation(fields: [leagueId], references: [id])
+  leagueId     Int
+  stats        Json
+  gameDate     DateTime
+}
