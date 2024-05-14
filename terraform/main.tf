@@ -22,9 +22,9 @@ resource "aws_elastic_beanstalk_application" "myapp" {
 # Elastic Beanstalk environment, using the application name from either the new or existing application
 resource "aws_elastic_beanstalk_environment" "myenv" {
   name                = "ChampionsClub-env"
-  application         = length(aws_elastic_beanstalk_application.myapp) > 0 ? aws_elastic_beanstalk_application.myapp[0].name : data.aws_elastic_beanstalk_application.existing.name
+  application         = coalesce(aws_elastic_beanstalk_application.myapp[0].name, data.aws_elastic_beanstalk_application.existing.name)
   solution_stack_name = "64bit Amazon Linux 2023 v6.1.4 running Node.js 20"
-  wait_for_ready_timeout = "30m"  // increase from '20m' to '30m'
+  wait_for_ready_timeout = "30m"  // Increase from '20m' to '30m'
   depends_on = [aws_elastic_beanstalk_application.myapp]
 
   setting {
