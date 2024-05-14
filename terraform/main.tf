@@ -10,7 +10,7 @@ resource "aws_elastic_beanstalk_application" "myapp" {
 resource "aws_elastic_beanstalk_environment" "myenv" {
   name                = "ChampionsClub-env"
   application         = aws_elastic_beanstalk_application.myapp.name
-  solution_stack_name = "64bit Amazon Linux 2 v5.2.3 running Node.js 14"
+  solution_stack_name = "64bit Amazon Linux 2023 v6.1.4 running Node.js 20"
 
   setting {
     namespace = "aws:elasticbeanstalk:container:nodejs"
