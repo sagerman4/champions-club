@@ -22,12 +22,6 @@ resource "aws_elastic_beanstalk_environment" "myenv" {
   solution_stack_name = "64bit Amazon Linux 2023 v6.1.4 running Node.js 20"
 
   setting {
-    namespace = "aws:elasticbeanstalk:container:nodejs"
-    name      = "NodeCommand"
-    value     = "npm run start"
-  }
-
-  setting {
     namespace = "aws:elasticbeanstalk:environment:process:default"
     name      = "Port"
     value     = "8080"
